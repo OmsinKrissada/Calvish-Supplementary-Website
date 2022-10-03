@@ -1,5 +1,5 @@
 <template>
-	<div class="relative" style=" width: 160px;">
+	<div class="relative" style="width: 160px;">
 		<div class="banner-container">
 			<div alt="Banner item: RHOMBUS_MIDDLE with color WHITE"
 				src="https://cdn.wynncraft.com/nextgen/banners/RHOMBUS_MIDDLE.svg" class="banner-img-item"
