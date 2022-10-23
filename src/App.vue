@@ -7,6 +7,13 @@ import Banner from './components/icons/Banner.vue';
 import LiquidEmeraldStack from './components/icons/LiquidEmeraldStack.vue';
 import type { Guild, Member } from './types';
 import { fullDurationString } from './helper';
+import { useHead } from '@vueuse/head';
+import { members } from './xp_season1.json';
+
+
+useHead({
+  title: 'Top XP Event | Calvish'
+});
 
 const xp = ref(0);
 const guild = ref<Guild>();
@@ -26,36 +33,39 @@ const countdown = computed(() => {
     return 'The event has ended!';
 });
 
-const oldContribution: { [name: string]: number; } = {
-  closier: 328644470,
-  exqlode: 267788568,
-  Stivais: 125493747,
-  cmosier: 48896580,
-  OmBean: 31397513,
-  Genues: 30089593,
-  sunny_young: 20695955,
-  zwheels10: 19268139,
-  // Latastrophue: 0,
-  ilykookie: 19234144,
-  GewoonMel: 17449466,
-  GamingReizouko: 12961967,
-  hesrightyouknow: 11977679,
-  Huruf: 10566744,
-  Diz: 6541981,
-  Triflame: 5326585,
-  Aftershokke: 5023574,
-  _imsoap: 4839622,
-  Mango_Birbs: 4498349,
-  TmanBagged: 2539693,
-  imMegu: 2339286,
-  ItsObvious: 2024393,
-  CptShock: 1782231,
-  chi_ming: 1769518,
-  __labz: 1508604,
-  Swagful: 1115480,
-  // sadlucy: 1000000,
-  // TwelvenK: 1000000,
-};
+// const oldContribution: { [name: string]: number; } = {
+//   closier: 328644470,
+//   exqlode: 267788568,
+//   Stivais: 125493747,
+//   cmosier: 48896580,
+//   OmBean: 31397513,
+//   Genues: 30089593,
+//   sunny_young: 20695955,
+//   zwheels10: 19268139,
+//   Latastrophue: 0,
+//   ilykookie: 19234144,
+//   GewoonMel: 17449466,
+//   GamingReizouko: 12961967,
+//   hesrightyouknow: 11977679,
+//   Huruf: 10566744,
+//   Diz: 6541981,
+//   Triflame: 5326585,
+//   Aftershokke: 5023574,
+//   _imsoap: 4839622,
+//   Mango_Birbs: 4498349,
+//   TmanBagged: 2539693,
+//   imMegu: 2339286,
+//   ItsObvious: 2024393,
+//   CptShock: 1782231,
+//   chi_ming: 1769518,
+//   __labz: 1508604,
+//   Swagful: 1115480,
+//   // sadlucy: 1000000,
+//   // TwelvenK: 1000000,
+// };
+
+const oldContribution = members.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
+console.log(oldContribution);
 
 async function fetchGuild() {
   try {
@@ -93,7 +103,7 @@ onUnmounted(() => clearInterval(interval));
     <header class="flex flex-col items-center">
       <h1 class="font-fira text-center text-5xl">Calvish [bean]</h1>
       <div class="h-1 w-12 my-10 bg-emerald-500 rounded" />
-      <div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
+      <!-- <div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
         <LiquidEmeraldStack />
         <h3 class="font-medium text-2xl text-slate-200">Top XP Event <span class="underline text-emerald-200">Season
             1</span>
@@ -101,14 +111,14 @@ onUnmounted(() => clearInterval(interval));
       </div>
       <p class="mt-5 font-medium text-center text-xl text-emerald-400 font-mono">
         Ends in {{countdown}}
-      </p>
+      </p> -->
     </header>
 
-    <div class="mt-20">
+    <div class="mt-10">
       <p class="mb-2 font-medium text-center">
         Guild Level: {{guild?.level}} ({{guild?.xp}}%)
       </p>
-      <div class="max-w-6xl mx-auto bg-white/20 rounded-md">
+      <div class="max-w-2xl mx-auto bg-white/20 rounded-md">
         <div class="h-2 w-0 bg-emerald-500 rounded-md duration-1000"
           :style="{width: guild?.xp+'%', 'transition-property': 'width'}" />
       </div>
@@ -116,6 +126,11 @@ onUnmounted(() => clearInterval(interval));
 
     <section>
       <!-- <button @click="fetchGuild">Refresh</button> -->
+      <p class="mt-8 text-center">Number in <span class="font-medium text-emerald-500">green</span> text indicates
+        percentage since
+        last season</p>
+      <p class="text-center"><span class="font-mono text-emerald-500">∞</span> means player previously had no
+        contribution</p>
       <TransitionGroup name="list" tag="ul" class="w-max mt-10 mx-auto">
         <li v-for="m,i in leaderboard" :key="m.uuid"
           class="relative flex flex-col sm:flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded">
@@ -128,9 +143,9 @@ onUnmounted(() => clearInterval(interval));
               <span class="hidden sm:inline">
                 ({{m.rank}})
               </span>
-              <span v-if="m.contributed-(oldContribution[m.name]??1115480)>=0.005"
+              <span v-if="m.contributed-(oldContribution.get(m.name)??0)>=0.005"
                 class="inline sm:hidden text-emerald-500">
-                {{formatter_2.format((m.contributed-(oldContribution[m.name]??1115480))/(oldContribution[m.name]??1115480)*100)}}
+                {{formatter_2.format((m.contributed-(oldContribution.get(m.name)??0))/(oldContribution.get(m.name)??0)*100)}}
                 %
                 &uarr;
               </span>
@@ -138,9 +153,9 @@ onUnmounted(() => clearInterval(interval));
           </div>
           <div>
             <span class="right-3 font-medium font-mono sm:text-right text-slate-300">
-              <span v-if="m.contributed-(oldContribution[m.name]??1115480)>=0.005"
+              <span v-if="m.contributed-(oldContribution.get(m.name)??0)>=0.005"
                 class="hidden sm:inline text-emerald-500">
-                {{formatter_2.format((m.contributed-(oldContribution[m.name]??1115480))/(oldContribution[m.name]??1115480)*100)}}
+                {{formatter_2.format((m.contributed-(oldContribution.get(m.name)??0))/(oldContribution.get(m.name)??0)*100)}}
                 %
                 &uarr;
               </span>

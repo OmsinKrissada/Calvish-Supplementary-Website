@@ -213,17 +213,46 @@
     "@vueuse/shared" "9.3.0"
     vue-demi "*"
 
+"@vueuse/head@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-0.8.2.tgz#f25b8272f65e09ec413ab7dab24c76a07aae6b3a"
+  integrity sha512-xq62ddpq2jjeh5+pVZuyJ24FKwUwl2NOMJ9ChVDkEYicc4maxcMCoq7mXcFAri+Hb98wokJ00xMTztei2NF06Q==
+  dependencies:
+    "@vueuse/shared" "^9.3.0"
+    "@zhead/schema-vue" "^0.8.0"
+
 "@vueuse/metadata@9.3.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-9.3.0.tgz#c107fe77a577e1f221536cd1b291039c0c7c4bce"
   integrity sha512-GnnfjbzIPJIh9ngL9s9oGU1+Hx/h5/KFqTfJykzh/1xjaHkedV9g0MASpdmPZIP+ynNhKAcEfA6g5i8KXwtoMA==
 
-"@vueuse/shared@9.3.0":
+"@vueuse/shared@9.3.0", "@vueuse/shared@^9.2.0", "@vueuse/shared@^9.3.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-9.3.0.tgz#40fc138ba4e379c894075830aa2e15404aaa8a5b"
   integrity sha512-caGUWLY0DpPC6l31KxeUy6vPVNA0yKxx81jFYLoMpyP6cF84FG5Dkf69DfSUqL57wX8JcUkJDMnQaQIZPWFEQQ==
   dependencies:
     vue-demi "*"
+
+"@zhead/schema-raw@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@zhead/schema-raw/-/schema-raw-0.8.1.tgz#8238a4faf8cd1e7f9d217a0d5ee5d158244f1a69"
+  integrity sha512-xe5F0OUkDUgbuhbI+55zE3zoat9YbQtYNJaALLqHd+IFfbn+prBxmJ0utzE+ieYkbcDQZrVzgNppJR//bekV2A==
+  dependencies:
+    "@zhead/schema" "0.8.1"
+
+"@zhead/schema-vue@^0.8.0":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@zhead/schema-vue/-/schema-vue-0.8.1.tgz#306aff95a3cd00a61d98c391b343bd96741d33da"
+  integrity sha512-SfrykGIA0w7uolIzy0Bg2kqdXIcVeiKepdfbrKN36PtQbvByV/fow6zJ7gH6IYgtAKM7XxCQ3WIuAgn038LUNQ==
+  dependencies:
+    "@vueuse/shared" "^9.2.0"
+    "@zhead/schema" "0.8.1"
+    "@zhead/schema-raw" "0.8.1"
+
+"@zhead/schema@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@zhead/schema/-/schema-0.8.1.tgz#0961feee88503540f72c8ca1e34a36bcb2c0eebf"
+  integrity sha512-Zhfp7R+HXHsN0Ig5L5R9624NgIGENzagpP3TMnq0mE/JBXU7cP+iY5ooONex2rlPl08QuF3FbNu8qKULH3oiJg==
 
 acorn-node@^1.8.2:
   version "1.8.2"
