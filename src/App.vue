@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import { useNow, useTimestamp } from '@vueuse/core';
 import axios from 'axios';
 import { formatDuration, formatDistance, formatDistanceStrict } from 'date-fns';
@@ -8,7 +8,7 @@ import LiquidEmeraldStack from './components/icons/LiquidEmeraldStack.vue';
 import type { Guild, Member } from './types';
 import { fullDurationString } from './helper';
 import { useHead } from '@vueuse/head';
-import { members } from './xp_season1.json';
+import { members as oldMembers } from './xp_before_season2.json';
 
 
 useHead({
@@ -25,7 +25,7 @@ const formatter_2 = Intl.NumberFormat('en', { useGrouping: true, maximumFraction
 const formatter_3 = Intl.NumberFormat('en', { useGrouping: true });
 
 const countdown = computed(() => {
-  const diff = new Date('2022-10-09T11:30:00Z').valueOf() - useNow().value.valueOf();
+  const diff = new Date('2022-11-22T00:50:00Z').valueOf() - useNow().value.valueOf();
 
   if (diff >= 1)
     return fullDurationString(diff / 1000);
@@ -33,38 +33,7 @@ const countdown = computed(() => {
     return 'The event has ended!';
 });
 
-// const oldContribution: { [name: string]: number; } = {
-//   closier: 328644470,
-//   exqlode: 267788568,
-//   Stivais: 125493747,
-//   cmosier: 48896580,
-//   OmBean: 31397513,
-//   Genues: 30089593,
-//   sunny_young: 20695955,
-//   zwheels10: 19268139,
-//   Latastrophue: 0,
-//   ilykookie: 19234144,
-//   GewoonMel: 17449466,
-//   GamingReizouko: 12961967,
-//   hesrightyouknow: 11977679,
-//   Huruf: 10566744,
-//   Diz: 6541981,
-//   Triflame: 5326585,
-//   Aftershokke: 5023574,
-//   _imsoap: 4839622,
-//   Mango_Birbs: 4498349,
-//   TmanBagged: 2539693,
-//   imMegu: 2339286,
-//   ItsObvious: 2024393,
-//   CptShock: 1782231,
-//   chi_ming: 1769518,
-//   __labz: 1508604,
-//   Swagful: 1115480,
-//   // sadlucy: 1000000,
-//   // TwelvenK: 1000000,
-// };
-
-const oldContribution = members.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
+const oldContribution = oldMembers.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
 console.log(oldContribution);
 
 async function fetchGuild() {
@@ -80,6 +49,18 @@ async function fetchGuild() {
     } else console.error(e);
   }
 }
+
+const view = ref<'all' | 'season'>('season');
+
+const members = computed(() => {
+  console.log(view);
+  if (view.value === 'season') return leaderboard.value?.filter(m => m.contributed - (oldContribution.get(m.name) ?? 0) > 0).sort((a, b) => (b.contributed - (oldContribution.get(b.name) ?? 0)) - (a.contributed - (oldContribution.get(a.name) ?? 0)));
+  else return leaderboard.value?.sort((a, b) => b.contributed - a.contributed);
+});
+watch(view, (view, oldView) => {
+});
+
+
 
 const total = ref(0);
 let interval: number;
@@ -103,64 +84,88 @@ onUnmounted(() => clearInterval(interval));
     <header class="flex flex-col items-center">
       <h1 class="font-fira text-center text-5xl">Calvish [bean]</h1>
       <div class="h-1 w-12 my-10 bg-emerald-500 rounded" />
-      <!-- <div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
+      <div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
         <LiquidEmeraldStack />
-        <h3 class="font-medium text-2xl text-slate-200">Top XP Event <span class="underline text-emerald-200">Season
-            1</span>
+        <h3 class="font-medium text-2xl text-slate-200">Top XP Event
+          <span class="underline text-emerald-200">Season 2</span>
         </h3>
       </div>
       <p class="mt-5 font-medium text-center text-xl text-emerald-400 font-mono">
-        Ends in {{countdown}}
-      </p> -->
+        Ends in {{ countdown }}
+      </p>
     </header>
 
     <div class="mt-10">
       <p class="mb-2 font-medium text-center">
-        Guild Level: {{guild?.level}} ({{guild?.xp}}%)
+        Guild Level: {{ guild?.level }} ({{ guild?.xp }}%)
       </p>
       <div class="max-w-2xl mx-auto bg-white/20 rounded-md">
         <div class="h-2 w-0 bg-emerald-500 rounded-md duration-1000"
-          :style="{width: guild?.xp+'%', 'transition-property': 'width'}" />
+          :style="{ width: guild?.xp + '%', 'transition-property': 'width' }" />
       </div>
     </div>
 
     <section>
       <!-- <button @click="fetchGuild">Refresh</button> -->
-      <p class="mt-8 text-center">Number in <span class="font-medium text-emerald-500">green</span> text indicates
+
+
+      <ul
+        class="flex flex-wrap items-center w-max mx-auto mt-8 text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+        <!-- <p class="m-4 text-lg text-white">Select View</p> -->
+        <li class="mr-2">
+          <button @click="view = 'all'" class="inline-block py-3 px-4 bg-gray-800 text-white rounded-lg"
+            :class="{ 'bg-sky-400 text-slate-900': view === 'all' }" aria-current="page">
+            All Time View
+          </button>
+        </li>
+        <li class="mr-2">
+          <button @click="view = 'season'" class="inline-block py-3 px-4 bg-gray-800 text-white rounded-lg "
+            :class="{ 'bg-sky-400 text-slate-900': view === 'season' }">
+            Season View
+          </button>
+        </li>
+      </ul>
+
+
+      <p v-if="view === 'all'" class="mt-8 text-center">Number in <span
+          class="font-medium text-emerald-500">green</span>
+        text indicates
         percentage since
-        last season</p>
-      <p class="text-center"><span class="font-mono text-emerald-500">∞</span> means player previously had no
+        the start of this season</p>
+      <p v-if="view === 'all'" class="text-center"><span class="font-mono text-emerald-500">∞</span> means player
+        previously had no
         contribution</p>
-      <TransitionGroup name="list" tag="ul" class="w-max mt-10 mx-auto">
-        <li v-for="m,i in leaderboard" :key="m.uuid"
-          class="relative flex flex-col sm:flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded">
+
+      <TransitionGroup name="list" tag="ul" class="w-max mt-4 mx-auto space-y-2">
+        <li v-for="m, i in members" :key="m.uuid"
+          class="relative flex flex-col sm:flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded shadow-sm shadow-indigo-300/60">
           <div>
-            <p class="absolute top-1 left-2 font-bold text-slate-400">{{i+1}}</p>
+            <p class="absolute top-1 left-2 font-bold text-slate-400">{{ i + 1 }}</p>
             <img :src="`https://crafatar.com/avatars/${m.uuid}?overlay`"
               class="inline w-5 ml-8 mr-2 pixelated rounded-sm">
-            <a :href="`https://wynncraft.com/stats/player/${m.name}`" class="text-lg">
-              {{m.name}}
-              <span class="hidden sm:inline">
-                ({{m.rank}})
-              </span>
-              <span v-if="m.contributed-(oldContribution.get(m.name)??0)>=0.005"
-                class="inline sm:hidden text-emerald-500">
-                {{formatter_2.format((m.contributed-(oldContribution.get(m.name)??0))/(oldContribution.get(m.name)??0)*100)}}
-                %
-                &uarr;
-              </span>
+            <a :href="`https://wynncraft.com/stats/player/${m.name}`" class="font-medium text-md tracking-wider">
+              {{ m.name }}
+              <!-- <span class="hidden sm:inline">
+                ({{ m.rank }})
+              </span> -->
             </a>
           </div>
           <div>
-            <span class="right-3 font-medium font-mono sm:text-right text-slate-300">
-              <span v-if="m.contributed-(oldContribution.get(m.name)??0)>=0.005"
+            <span class="right-3 font-mono sm:text-right text-slate-300">
+              <span v-if="view === 'all' && m.contributed - (oldContribution.get(m.name) ?? 0) >= 0.005"
                 class="hidden sm:inline text-emerald-500">
-                {{formatter_2.format((m.contributed-(oldContribution.get(m.name)??0))/(oldContribution.get(m.name)??0)*100)}}
+                {{ formatter_2.format((m.contributed - (oldContribution.get(m.name) ?? 0)) /
+                    (oldContribution.get(m.name) ?? 0) * 100)
+                }}
                 %
                 &uarr;
               </span>
-              {{formatter_3.format(m.contributed)}} XP
-              <p class="font-sans text-sm">({{formatter_3.format(m.contributed/total*100)}} %)</p>
+              {{ formatter_3.format(view === 'all' ? m.contributed : m.contributed - (oldContribution.get(m.name) ?? 0))
+              }}
+              XP
+              <p v-if="view === 'all'" class="font-sans text-sm">({{ formatter_3.format(m.contributed / total * 100) }}
+                %)
+              </p>
             </span>
           </div>
         </li>
