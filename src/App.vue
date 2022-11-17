@@ -78,7 +78,7 @@ onUnmounted(() => clearInterval(interval));
 </script>
 
 <template>
-  <div class="min-h-screen p-10 bg-slate-900 text-slate-200">
+  <div class="min-h-screen p-4 sm:p-10 bg-slate-900 text-slate-200">
 
     <Banner class="mx-auto mb-5" />
     <header class="flex flex-col items-center">
@@ -136,9 +136,9 @@ onUnmounted(() => clearInterval(interval));
         previously had no
         contribution</p>
 
-      <TransitionGroup name="list" tag="ul" class="w-max mt-4 mx-auto space-y-2">
+      <TransitionGroup name="list" tag="ul" class="sm:w-max mt-4 mx-auto space-y-2">
         <li v-for="m, i in members" :key="m.uuid"
-          class="relative flex flex-col sm:flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded shadow-sm shadow-indigo-300/60">
+          class="relative flex flex-wrap flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded shadow-sm shadow-indigo-300/60">
           <div>
             <p class="absolute top-1 left-2 font-bold text-slate-400">{{ i + 1 }}</p>
             <img :src="`https://crafatar.com/avatars/${m.uuid}?overlay`"
