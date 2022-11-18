@@ -153,20 +153,18 @@ onUnmounted(() => clearInterval(interval));
             </a>
           </div>
           <div>
-            <span class="right-3 font-mono sm:text-right text-slate-300">
+            <span class="right-3 font-mono text-right text-slate-300">
               <span v-if="view === 'all' && m.contributed - (oldContribution.get(m.name) ?? 0) >= 0.005"
                 class="hidden sm:inline text-emerald-500">
                 {{ formatter_2.format((m.contributed - (oldContribution.get(m.name) ?? 0)) /
                     (oldContribution.get(m.name) ?? 0) * 100)
-                }}
-                %
+                }}%
                 &uarr;
               </span>
               {{ formatter_3.format(view === 'all' ? m.contributed : m.contributed - (oldContribution.get(m.name) ?? 0))
               }}
               XP
-              <p v-if="view === 'all'" class="font-sans text-sm">({{ formatter_3.format(m.contributed / total * 100) }}
-                %)
+              <p v-if="view === 'all'" class="text-sm">({{ formatter_3.format(m.contributed / total * 100) }}%)
               </p>
             </span>
           </div>
@@ -178,7 +176,7 @@ onUnmounted(() => clearInterval(interval));
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono&display=swap');
 
 .list-move,
 /* apply transition to moving elements */

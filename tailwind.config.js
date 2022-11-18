@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       fontFamily: {
         'fira': 'Fira Sans',
-        'sans': 'Inter'
+        'sans': 'Inter',
+        'mono': 'JetBrains Mono',
       }
     },
   },
