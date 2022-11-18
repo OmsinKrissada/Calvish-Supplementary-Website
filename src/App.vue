@@ -78,7 +78,7 @@ onUnmounted(() => clearInterval(interval));
 </script>
 
 <template>
-  <div class="min-h-screen p-4 sm:p-10 bg-slate-900 text-slate-200">
+  <div class="min-h-screen p-4 sm:p-10 bg-black text-slate-200">
 
     <Banner class="mx-auto mb-5" />
     <header class="flex flex-col items-center">
@@ -109,18 +109,19 @@ onUnmounted(() => clearInterval(interval));
       <!-- <button @click="fetchGuild">Refresh</button> -->
 
 
-      <ul
-        class="flex flex-wrap items-center w-max mx-auto mt-8 text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+      <ul class="flex items-center space-x-2 w-max mx-auto mt-8 text-sm font-medium text-center rounded-xl">
         <!-- <p class="m-4 text-lg text-white">Select View</p> -->
-        <li class="mr-2">
-          <button @click="view = 'all'" class="inline-block py-3 px-4 bg-gray-800 text-white rounded-lg"
-            :class="{ 'bg-sky-400 text-slate-900': view === 'all' }" aria-current="page">
+        <li>
+          <button @click="view = 'all'"
+            class="inline-block py-3 px-4 border-[1px] border-neutral-700 text-neutral-400 rounded-lg transition-all"
+            :class="{ 'bg-white text-black selected-btn': view === 'all' }" aria-current="page">
             All Time View
           </button>
         </li>
-        <li class="mr-2">
-          <button @click="view = 'season'" class="inline-block py-3 px-4 bg-gray-800 text-white rounded-lg "
-            :class="{ 'bg-sky-400 text-slate-900': view === 'season' }">
+        <li>
+          <button @click="view = 'season'"
+            class="inline-block py-3 px-4 border-[1px] border-neutral-700 text-neutral-400 rounded-lg transition-all"
+            :class="{ 'bg-white text-black selected-btn': view === 'season' }">
             Season View
           </button>
         </li>
@@ -138,12 +139,13 @@ onUnmounted(() => clearInterval(interval));
 
       <TransitionGroup name="list" tag="ul" class="sm:w-max mt-4 mx-auto space-y-2">
         <li v-for="m, i in members" :key="m.uuid"
-          class="relative flex flex-wrap flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-slate-800 rounded shadow-sm shadow-indigo-300/60">
+          class="relative flex flex-wrap flex-row justify-between sm:items-center space-x-8 p-2 m-1 border-2 border-neutral-800 rounded  shadow-white/60"
+          :class="{ 'bg-gradient-to-r from-orange-800/60 to-yellow-600/60 border-yellow-600 winner-shadow': view === 'season' && i === 0 }">
           <div>
-            <p class="absolute top-1 left-2 font-bold text-slate-400">{{ i + 1 }}</p>
+            <span class="font-bold text-slate-400">{{ i + 1 }}</span>
             <img :src="`https://crafatar.com/avatars/${m.uuid}?overlay`"
               class="inline w-5 ml-8 mr-2 pixelated rounded-sm">
-            <a :href="`https://wynncraft.com/stats/player/${m.name}`" class="font-medium text-md tracking-wider">
+            <a :href="`https://wynncraft.com/stats/player/${m.name}`" class="font-medium text-md">
               {{ m.name }}
               <!-- <span class="hidden sm:inline">
                 ({{ m.rank }})
@@ -176,6 +178,8 @@ onUnmounted(() => clearInterval(interval));
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 .list-move,
 /* apply transition to moving elements */
 .list-enter-active,
@@ -193,5 +197,13 @@ onUnmounted(() => clearInterval(interval));
    animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
+}
+
+.winner-shadow {
+  box-shadow: 0px 0px 20px rgba(218, 165, 32, 0.6);
+}
+
+.selected-btn {
+  box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.6);
 }
 </style>

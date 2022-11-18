@@ -6,10 +6,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily:{
+      fontFamily: {
         'fira': 'Fira Sans',
+        'sans': 'Inter'
       }
     },
   },
   plugins: [],
-}
+};
