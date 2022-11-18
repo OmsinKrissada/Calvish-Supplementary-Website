@@ -156,10 +156,9 @@ onUnmounted(() => clearInterval(interval));
             <span class="right-3 font-mono text-right text-slate-300">
               <span v-if="view === 'all' && m.contributed - (oldContribution.get(m.name) ?? 0) >= 0.005"
                 class="hidden sm:inline text-emerald-500">
-                {{ formatter_2.format((m.contributed - (oldContribution.get(m.name) ?? 0)) /
+                +{{ formatter_2.format((m.contributed - (oldContribution.get(m.name) ?? 0)) /
                     (oldContribution.get(m.name) ?? 0) * 100)
                 }}%
-                &uarr;
               </span>
               {{ formatter_3.format(view === 'all' ? m.contributed : m.contributed - (oldContribution.get(m.name) ?? 0))
               }}
