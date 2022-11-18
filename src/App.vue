@@ -142,7 +142,7 @@ onUnmounted(() => clearInterval(interval));
           class="relative flex flex-wrap flex-row justify-between sm:items-center space-x-8 p-2 m-1 border-2 border-neutral-800 rounded  shadow-white/60"
           :class="{ 'bg-gradient-to-r from-orange-800/60 to-yellow-600/60 border-yellow-600 winner-shadow': view === 'season' && i === 0 }">
           <div>
-            <span class="font-bold text-slate-400">{{ i + 1 }}</span>
+            <span class="inline-block w-3 font-bold text-slate-400">{{ i + 1 }}</span>
             <img :src="`https://crafatar.com/avatars/${m.uuid}?overlay`"
               class="inline w-5 ml-8 mr-2 pixelated rounded-sm">
             <a :href="`https://wynncraft.com/stats/player/${m.name}`" class="font-medium text-md">
@@ -163,8 +163,7 @@ onUnmounted(() => clearInterval(interval));
               {{ formatter_3.format(view === 'all' ? m.contributed : m.contributed - (oldContribution.get(m.name) ?? 0))
               }}
               XP
-              <p v-if="view === 'all'" class="text-sm">({{ formatter_3.format(m.contributed / total * 100) }}%)
-              </p>
+              <p v-if="view === 'all'" class="text-sm">({{ formatter_3.format(m.contributed / total * 100) }}%)</p>
             </span>
           </div>
         </li>
