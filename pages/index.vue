@@ -31,7 +31,7 @@ const countdown = computed(() => {
 
 const oldContribution = oldMembers.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
 
-const { data: guild, pending, error, refresh: refreshGuild } = await useFetch<Guild>('https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish', { server: true });
+const { data: guild, pending, error, refresh: refreshGuild } = await useFetch<Guild>('https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish', { server: false });
 // async function refreshGuild() {
 // 	try {
 // 		console.log(guild.value);
@@ -60,14 +60,13 @@ leaderboard.value?.map(m => total.value += m.contributed);
 let interval: NodeJS.Timer;
 onMounted(async () => {
 	// await fetchGuild();
-	interval = setInterval(() => {
-		console.log(view);
-		refreshGuild();
+	console.log('what');
+	interval = setInterval(async () => {
+		await refreshGuild();
 		console.log('Refreshed!');
 	}, 3000);
 });
 
-onUpdated(() => console.log('updated'));
 watch(() => route.query, () => view.value = route.query.view as string ?? 'all');
 
 onUnmounted(() => clearInterval(interval));
