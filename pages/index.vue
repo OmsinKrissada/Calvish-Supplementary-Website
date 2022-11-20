@@ -10,11 +10,6 @@ import { Guild } from '../utils/types';
 // import { members as oldMembers } from 'xp_before_season2.json';
 
 
-useHead({
-	title: 'Top XP Event | Calvish'
-});
-
-
 const oldMembers = xp_before_season2.members;
 
 const xp = ref(0);
@@ -79,6 +74,11 @@ onUnmounted(() => clearInterval(interval));
 </script>
 
 <template>
+
+	<Head>
+		<title>XP Event | Calvish</title>
+	</Head>
+
 	<div class="min-h-screen p-4 sm:p-10 bg-black text-slate-200">
 
 		<Banner class="mx-auto mb-5" />
@@ -87,7 +87,7 @@ onUnmounted(() => clearInterval(interval));
 			<div class="h-1 w-12 my-10 bg-emerald-500 rounded" />
 			<div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
 				<LiquidEmeraldStack />
-				<h3 class="font-medium text-2xl text-slate-200">Top XP Event
+				<h3 class="font-medium text-2xl text-slate-200">XP Event
 					<span class="underline text-emerald-200">Season 2</span>
 				</h3>
 			</div>

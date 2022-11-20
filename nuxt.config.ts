@@ -4,6 +4,7 @@ export default defineNuxtConfig({
 		shim: false
 	},
 	css: ['~/assets/css/main.css'],
+	plugins: [{ src: '~/plugins/vercel.js', mode: 'client' }],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
