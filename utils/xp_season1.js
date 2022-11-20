@@ -1,4 +1,4 @@
-{
+export const xp_season1 = {
 	"name": "Calvish",
 	"prefix": "bean",
 	"members": [
@@ -85,4 +85,4 @@
 		]
 	},
 	"request": { "timestamp": 1665321282, "version": 1 }
-}
+};

@@ -33,4 +33,4 @@ export interface Guild {
 		timestamp: number;
 		version: number;
 	};
-}
+};

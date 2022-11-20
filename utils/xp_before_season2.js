@@ -1,4 +1,4 @@
-{
+export const xp_before_season2 = {
 	"name": "Calvish",
 	"prefix": "bean",
 	"members": [
@@ -455,4 +455,4 @@
 		"timestamp": 1668471034,
 		"version": 1
 	}
-}
+};
