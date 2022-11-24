@@ -10,7 +10,8 @@ import { Guild } from '../utils/types';
 // import { members as oldMembers } from 'xp_before_season2.json';
 
 
-const oldMembers = xp_before_season2.members;
+const preSeason2Members = xp_before_season2.members;
+const postSeason2Members = xp_after_season2.members;
 
 const xp = ref(0);
 const leaderboard = computed(() => {
@@ -24,14 +25,15 @@ const countdown = computed(() => {
 	const diff = new Date('2022-11-22T00:50:00Z').valueOf() - useNow().value.valueOf();
 
 	if (diff >= 1)
-		return fullDurationString(diff / 1000);
+		return `Ends in ${fullDurationString(diff / 1000)}`;
 	else
 		return 'The event has ended!';
 });
 
-const oldContribution = oldMembers.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
+const preSeason2Contrib = preSeason2Members.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
+const postSeason2Contrib = postSeason2Members.reduce((r, c) => r.set(c.name, c.contributed), new Map<string, number>());
 
-const { data: guild, pending, error, refresh: refreshGuild } = await useFetch<Guild>('https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish', { server: false });
+const { data: guild, pending, error, refresh: refreshGuild } = await useFetch<Guild>('https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish', { server: true });
 // async function refreshGuild() {
 // 	try {
 // 		console.log(guild.value);
@@ -49,7 +51,7 @@ const route = useRoute();
 const view = ref<string>(route.query.view as string ?? 'all');
 
 const members = computed(() => {
-	if (view.value === 'season') return leaderboard.value?.filter(m => m.contributed - (oldContribution.get(m.name) ?? 0) > 0).sort((a, b) => (b.contributed - (oldContribution.get(b.name) ?? 0)) - (a.contributed - (oldContribution.get(a.name) ?? 0)));
+	if (view.value === 'season') return leaderboard.value?.filter(m => (postSeason2Contrib.get(m.name) ?? 0) - (preSeason2Contrib.get(m.name) ?? 0) > 0).sort((a, b) => ((postSeason2Contrib.get(b.name) ?? 0) - (preSeason2Contrib.get(b.name) ?? 0)) - ((postSeason2Contrib.get(a.name) ?? 0) - (preSeason2Contrib.get(a.name) ?? 0)));
 	else return leaderboard.value?.sort((a, b) => b.contributed - a.contributed);
 });
 
@@ -60,7 +62,6 @@ leaderboard.value?.map(m => total.value += m.contributed);
 let interval: NodeJS.Timer;
 onMounted(async () => {
 	// await fetchGuild();
-	console.log('what');
 	interval = setInterval(async () => {
 		await refreshGuild();
 		console.log('Refreshed!');
@@ -91,7 +92,7 @@ onUnmounted(() => clearInterval(interval));
 				</h3>
 			</div>
 			<p class="mt-5 font-medium text-center text-xl text-emerald-400 font-mono">
-				Ends in {{ countdown }}
+				{{ countdown }}
 			</p>
 		</header>
 
@@ -128,14 +129,19 @@ onUnmounted(() => clearInterval(interval));
 			</ul>
 
 
-			<p v-if="view === 'all'" class="mt-8 text-center">Number in <span
-					class="font-medium text-emerald-500">green</span>
-				text indicates
-				percentage since
-				the start of this season</p>
-			<p v-if="view === 'all'" class="text-center"><span class="font-mono text-emerald-500">∞</span> means player
-				previously had no
-				contribution</p>
+			<div class="my-8">
+				<p v-if="view === 'all'" class="text-center">Number in <span
+						class="font-medium text-emerald-500">green</span>
+					text indicates
+					percentage since
+					the start of this season</p>
+				<p v-if="view === 'all'" class="text-center"><span class="font-mono text-emerald-500">∞</span> means
+					player
+					previously had no
+					contribution</p>
+				<p v-if="view === 'season'" class="text-center">Displayed here are the XP each player gained during
+					the 2<sup>nd</sup> season</p>
+			</div>
 
 			<TransitionGroup name="list" tag="ul" class="sm:w-max mt-4 mx-auto space-y-2">
 				<li v-for="m, i in members" :key="m.uuid"
@@ -154,14 +160,15 @@ onUnmounted(() => clearInterval(interval));
 					</div>
 					<div>
 						<span class="right-3 font-mono text-right text-slate-300">
-							<span v-if="view === 'all' && m.contributed - (oldContribution.get(m.name) ?? 0) >= 0.005"
+							<span v-if="view === 'all' && m.contributed - (preSeason2Contrib.get(m.name) ?? 0) >= 0.005"
 								class="hidden sm:inline text-emerald-500">
-								+{{ formatter_2.format((m.contributed - (oldContribution.get(m.name) ?? 0)) /
-										(oldContribution.get(m.name) ?? 0) * 100)
+								+{{ formatter_2.format((m.contributed - (preSeason2Contrib.get(m.name) ?? 0)) /
+										(preSeason2Contrib.get(m.name) ?? 0) * 100)
 								}}%
 							</span>
-							{{ formatter_3.format(view === 'all' ? m.contributed : m.contributed -
-									(oldContribution.get(m.name) ?? 0))
+							{{ formatter_3.format(view === 'all' ? m.contributed : (postSeason2Contrib.get(m.name) ?? 0)
+									-
+									(preSeason2Contrib.get(m.name) ?? 0))
 							}}
 							XP
 							<p v-if="view === 'all'" class="text-sm">({{ formatter_3.format(m.contributed / total * 100)
