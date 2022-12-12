@@ -41,19 +41,17 @@ const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDi
 				<span class="inline w-3 mr-2 font-medium text-white border-b border-sky-400">{{ i + 1 }}</span>
 				<p class="inline font-medium"> {{ player.username }} </p>
 
-				<p class="text-emerald-400"> {{ formatter.format(player.score) }} scores</p>
-				<div>
-					<!-- <LiquidEmeraldStack class="w-4" /> -->
-					<p class="text-neutral-400">
-						XP:
-						<span class="text-white">{{ formatter.format(player.progress.contributed) }}</span>
-					</p>
-				</div>
+				<p class="text-emerald-400"> {{ formatter.format(player.score) }} points</p>
+				<p class="text-neutral-400">
+					Contributed
+					<span class="text-white">{{ formatter.format(player.progress.contributed) }}</span>
+					XP
+				</p>
 				<p class="text-neutral-400"> Play time:
 					<span class="text-white">{{ player.progress.playtime }}</span>
 					hrs
 				</p>
-				<p class="text-neutral-400"> Wars:
+				<p class="text-neutral-400"> War:
 					<span class="text-white">{{ player.progress.wars }}</span>
 					times
 				</p>

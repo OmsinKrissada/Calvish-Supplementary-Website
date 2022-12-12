@@ -33,7 +33,7 @@ function openModal() {
 
 
 		<HeadlessTransitionRoot appear :show="isOpen" as="template">
-			<HeadlessDialog as="div" @close="closeModal" class="relative z-10">
+			<HeadlessDialog as="div" @close="closeModal" class="relative z-40">
 				<HeadlessTransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0"
 					enter-to="opacity-100" leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
 					<div class="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
