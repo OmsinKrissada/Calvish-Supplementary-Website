@@ -11,4 +11,9 @@ export default defineNuxtConfig({
 			autoprefixer: {},
 		},
 	},
+	runtimeConfig: {
+		public: {
+			enableAnalytics: false,
+		}
+	},
 });
