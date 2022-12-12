@@ -12,7 +12,8 @@
     "@nuxtjs/google-fonts": "3.0.0-1",
     "@vercel/analytics": "^0.1.6",
     "axios": "^1.2.1",
-    "date-fns": "^2.29.3"
+    "date-fns": "^2.29.3",
+    "nuxt-headlessui": "^1.0.4"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

@@ -15,6 +15,7 @@ const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDi
 
 <template>
 	<div class="flex flex-col items-center max-w-6xl mx-auto">
+		<EventInfoDialog />
 		<div v-if="pending" class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			<div v-for="i in 40" class="relative space-y-[0.625rem] p-2 bg-black border border-neutral-500 rounded">
 
@@ -45,14 +46,16 @@ const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDi
 					<!-- <LiquidEmeraldStack class="w-4" /> -->
 					<p class="text-neutral-400">
 						XP:
-						<span class="text-white">{{ player.progress.contributed }}</span>
+						<span class="text-white">{{ formatter.format(player.progress.contributed) }}</span>
 					</p>
 				</div>
 				<p class="text-neutral-400"> Play time:
 					<span class="text-white">{{ player.progress.playtime }}</span>
+					hrs
 				</p>
 				<p class="text-neutral-400"> Wars:
 					<span class="text-white">{{ player.progress.wars }}</span>
+					times
 				</p>
 			</div>
 		</div>

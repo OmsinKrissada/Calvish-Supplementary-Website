@@ -5,6 +5,7 @@ export default defineNuxtConfig({
 	},
 	modules:[
 		'@nuxtjs/google-fonts',
+		'nuxt-headlessui',
 	],
 	css: ['~/assets/css/main.css'],
 	plugins: [{ src: '~/plugins/vercel.js', mode: 'client' }],
