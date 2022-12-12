@@ -3,6 +3,9 @@ export default defineNuxtConfig({
 	typescript: {
 		shim: false
 	},
+	modules:[
+		'@nuxtjs/google-fonts',
+	],
 	css: ['~/assets/css/main.css'],
 	plugins: [{ src: '~/plugins/vercel.js', mode: 'client' }],
 	postcss: {
@@ -14,6 +17,13 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			enableAnalytics: false,
+		}
+	},
+	googleFonts: {
+		families: {
+			'Fira Sans': [400, 500, 700],
+			Inter: [400, 500, 700],
+			'JetBrains Mono': [400, 500, 700]
 		}
 	},
 });
