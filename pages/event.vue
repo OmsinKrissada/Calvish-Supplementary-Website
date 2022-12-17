@@ -35,7 +35,7 @@ const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDi
 		</div>
 		<div v-else class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			<div v-for="player, i in data" class="relative p-2 bg-black border border-neutral-500 rounded"
-				:class="{ 'brightness-50': player.score == 0, 'shadow-[0px_0px_10px] shadow-amber-400': i == 0 }">
+				:class="{ 'brightness-50': player.score == 0, 'shadow-[0px_0px_12px] shadow-amber-400': i == 0 && player.score > 0 }">
 				<img :src="`https://crafatar.com/avatars/${player.uuid}?overlay`"
 					class="absolute top-4 right-4 w-8 ml-8 mr-2 pixelated rounded-sm">
 				<span class="inline w-3 mr-2 font-medium text-white border-b border-sky-400">{{ i + 1 }}</span>
