@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ChartOptions, ChartData } from 'chart.js';
+import { useNow, useTimestamp } from '@vueuse/core';
+import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
 
 type PlayerScore = {
 	uuid: string;
@@ -13,7 +15,9 @@ type PlayerScore = {
 	};
 };
 
-const { data, pending, error, refresh } = await useLazyFetch<PlayerScore[]>('https://krissada.com/api/calvish/event/weekly/score', { server: false, key: 'weekly/score' });
+const { data, pending, error, refresh } = await useLazyFetch<PlayerScore[]>(useRuntimeConfig().public.endpoint + '/event/weekly/score', { server: false, key: 'weekly/score' });
+
+// ------ Chart ------
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -55,15 +59,34 @@ const chartOptions: ChartOptions<'bar'> = {
 	},
 };
 
+// ------ Countdown ------
+const { data: nextResetDate } = await useLazyFetch<{ date: string; }>(useRuntimeConfig().public.endpoint + '/event/weekly/nextreset');
+const countdown = computed(() => {
+	// return nextResetDate.value ? formatDistanceToNowStrict() : 'Error';
+	if (!nextResetDate.value) return '';
+	const diff = new Date(nextResetDate.value.date).valueOf() - useNow().value.valueOf();
+
+	if (diff >= 0)
+		return `Next reset in ${fullDurationString(diff / 1000)}`;
+	else
+		return 'Score has been reset. Please refresh.';
+});
+
+
 const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDigits: 2 });
 </script>
 
 <template>
 	<div class="flex flex-col items-center max-w-6xl mx-auto">
+
 		<EventInfoDialog />
+
+		<div class="text-xl mb-8"> {{ countdown }} </div>
+
 		<div class="w-full h-80 lg:w-10/12 mb-8">
 			<Bar v-if="data" :options="chartOptions" :data="chartData" />
 		</div>
+
 		<div v-if="!data" class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			<div v-for="i in 40" class="relative space-y-[0.625rem] p-2 bg-black border border-neutral-500 rounded">
 
@@ -105,5 +128,6 @@ const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDi
 				</p>
 			</div>
 		</div>
+
 	</div>
 </template>

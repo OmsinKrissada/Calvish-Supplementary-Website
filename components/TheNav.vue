@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const route = useRoute();
 const redirects = [
-	{ name: 'Leaderboard', path: '/' },
-	{ name: 'Event', path: '/event' },
+	{ name: 'XP Contribution', path: '/' },
+	{ name: 'Weekly Stats', path: '/event' },
 ];
 </script>
 

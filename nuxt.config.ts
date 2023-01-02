@@ -18,6 +18,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			enableAnalytics: false,
+			endpoint:'https://krissada.com/api/calvish'
 		}
 	},
 	googleFonts: {

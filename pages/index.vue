@@ -68,20 +68,20 @@ onUnmounted(() => clearInterval(interval));
 		<div class="flex flex-col items-center">
 			<div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
 				<LiquidEmeraldStack />
-				<h3 class="font-medium text-2xl text-slate-200">XP Event
-					<span class="underline text-emerald-200">Season 2</span>
+				<h3 class="font-medium text-2xl text-slate-200">XP Contribution
+					<!-- <span class="underline text-emerald-200">Season 2</span> -->
 				</h3>
 			</div>
-			<p class="mt-5 font-medium text-center text-xl text-emerald-400 font-mono">
+			<!-- <p class="mt-5 font-medium text-center text-xl text-emerald-400 font-mono">
 				{{ countdown }}
-			</p>
+			</p> -->
 		</div>
 
-		<div class="mt-10">
+		<div class="my-10">
 			<p class="mb-2 font-medium text-center">
 				Guild Level: {{ guild?.level }} ({{ guild?.xp }}%)
 			</p>
-			<div class="max-w-2xl mx-auto bg-white/20 rounded-md">
+			<div class="max-w-md mx-auto bg-white/20 rounded-md">
 				<div class="h-2 w-0 bg-emerald-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
 					:style="{ width: guild?.xp + '%', 'transition-property': 'width' }" />
 			</div>
@@ -91,8 +91,7 @@ onUnmounted(() => clearInterval(interval));
 			<!-- <button @click="fetchGuild">Refresh</button> -->
 
 
-			<ul class="flex items-center space-x-2 w-max mx-auto mt-8 text-sm font-medium text-center rounded-xl">
-				<!-- <p class="m-4 text-lg text-white">Select View</p> -->
+			<!-- <ul class="flex items-center space-x-2 w-max mx-auto mt-8 text-sm font-medium text-center rounded-xl">
 				<li>
 					<NuxtLink to="/" class="inline-block py-3 px-4 bg-black text-neutral-400 rounded-lg transition-all"
 						:class="{ 'bg-white text-black selected-btn': view === 'all' }" aria-current="page"
@@ -108,10 +107,10 @@ onUnmounted(() => clearInterval(interval));
 						Season View
 					</NuxtLink>
 				</li>
-			</ul>
+			</ul> -->
 
 
-			<div class="my-8">
+			<!-- <div class="my-8">
 				<p v-if="view === 'all'" class="text-center">Number in <span
 						class="font-medium text-emerald-500">green</span>
 					text indicates
@@ -123,7 +122,7 @@ onUnmounted(() => clearInterval(interval));
 					contribution</p>
 				<p v-if="view === 'season'" class="text-center">Displayed here are the XP each player gained during
 					the 2<sup>nd</sup> season</p>
-			</div>
+			</div> -->
 
 			<!-- <input type="checkbox" id="gridView" v-model="gridView">
 			<label for="gridView">Grid View?</label> -->
@@ -146,21 +145,21 @@ onUnmounted(() => clearInterval(interval));
 					</div>
 					<div>
 						<span class="right-3 font-mono text-right text-slate-300">
-							<span v-if="view === 'all' && m.contributed - (preSeason2Contrib.get(m.name) ?? 0) >= 0.005"
+							<!-- <span v-if="view === 'all' && m.contributed - (preSeason2Contrib.get(m.name) ?? 0) >= 0.005"
 								class="hidden sm:inline text-emerald-500">
 								+{{ formatter_2.format((m.contributed - (preSeason2Contrib.get(m.name) ?? 0)) /
-										(preSeason2Contrib.get(m.name) ?? 0) * 100)
-								}}%
-							</span>
+		(preSeason2Contrib.get(m.name) ?? 0) * 100)
+}}%
+							</span> -->
 							{{ formatter_3.format(view === 'all' ? m.contributed : (postSeason2Contrib.get(m.name)
-									?? 0)
-									-
-									(preSeason2Contrib.get(m.name) ?? 0))
-							}}
+		?? 0)
+		-
+		(preSeason2Contrib.get(m.name) ?? 0))
+}}
 							XP
 							<p v-if="view === 'all'" class="text-sm">({{ formatter_3.format(m.contributed / total *
-									100)
-							}}%)</p>
+		100)
+								}}%)</p>
 						</span>
 					</div>
 				</li>
