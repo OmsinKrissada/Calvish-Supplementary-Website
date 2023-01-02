@@ -2,7 +2,7 @@
 import { useLocalStorage } from '@vueuse/core';
 
 
-const shouldHide = useLocalStorage('hide_event_info', false);
+const shouldHide = useLocalStorage('hide_event_info2', false);
 const isOpen = ref(!shouldHide.value);
 const persistent = ref(false);
 
@@ -49,6 +49,7 @@ function openModal() {
 								class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
 									How are the scores calculated?
+									<p>** 2 Jan UPDATE</p>
 								</HeadlessDialogTitle>
 								<div class="mt-2 space-y-2 text-sm">
 									<!-- <p class="text-sm text-gray-500"> -->
@@ -62,12 +63,12 @@ function openModal() {
 											participated</span>.
 									</p>
 									<p>
-										Each category has different weights as follow:
+										Each category has different weight:
 									</p>
 									<ol class="list-decimal ml-6">
-										<li>Contributed XP &rarr; approx. 1 for each million</li>
-										<li>Play time &rarr; 1 point per hour</li>
-										<li>War count &rarr; 1 point per time</li>
+										<li>Contributed XP &rarr; 1/million</li>
+										<li>Play time &rarr; 0.5/hour</li>
+										<li>War count &rarr; 1/time</li>
 									</ol>
 									<!-- </p> -->
 								</div>
