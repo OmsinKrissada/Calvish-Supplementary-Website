@@ -12,10 +12,13 @@
     "@nuxtjs/google-fonts": "3.0.0-1",
     "@vercel/analytics": "^0.1.6",
     "axios": "^1.2.1",
+    "chart.js": "^4.1.1",
     "date-fns": "^2.29.3",
-    "nuxt-headlessui": "^1.0.4"
+    "nuxt-headlessui": "^1.0.4",
+    "vue-chartjs": "^5.1.0"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.37",
     "@types/node": "^18.11.9",
     "@vueuse/core": "^9.6.0",
     "@vueuse/nuxt": "^9.6.0",

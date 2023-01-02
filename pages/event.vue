@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Bar } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ChartOptions, ChartData } from 'chart.js';
+
 type PlayerScore = {
 	uuid: string;
 	username: string;
@@ -9,14 +12,59 @@ type PlayerScore = {
 		wars: 0;
 	};
 };
+
 const { data, pending, error, refresh } = await useLazyFetch<PlayerScore[]>('https://krissada.com/api/calvish/event/weekly/score', { server: false, key: 'weekly/score' });
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
+const chartData = computed<ChartData<'bar'>>(() => {
+	const filtered = data.value?.filter(d => d.score > 0) ?? [];
+	return {
+		labels: filtered.map(d => d.username) ?? [],
+		datasets: [{ label: 'score', data: filtered.map(d => d.score) ?? [] }]
+	};
+});
+
+const chartOptions: ChartOptions<'bar'> = {
+	responsive: true,
+	backgroundColor: '#c084fc',
+	aspectRatio: 0,
+	scales: {
+		x: {
+			grid: {
+				display: false
+			},
+			border: {
+				display: false
+			},
+		},
+		y: {
+			grid: {
+				// display: false
+				color: '#525252'
+			},
+			border: {
+				display: false
+			},
+		}
+	},
+	plugins: {
+		legend: {
+			display: false
+		},
+	},
+};
+
 const formatter = Intl.NumberFormat('en', { useGrouping: true, maximumFractionDigits: 2 });
 </script>
 
 <template>
 	<div class="flex flex-col items-center max-w-6xl mx-auto">
 		<EventInfoDialog />
-		<div v-if="pending" class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
+		<div class="w-full h-80 lg:w-10/12 mb-8">
+			<Bar v-if="data" :options="chartOptions" :data="chartData" />
+		</div>
+		<div v-if="!data" class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			<div v-for="i in 40" class="relative space-y-[0.625rem] p-2 bg-black border border-neutral-500 rounded">
 
 				<!-- player head -->
