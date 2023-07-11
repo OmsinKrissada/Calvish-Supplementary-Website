@@ -136,7 +136,7 @@ function getNth(n: number) {
 			class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			<div
 				v-for="i in 40"
-				class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-500 rounded"
+				class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-700 rounded"
 				:key="i">
 				<!-- player head -->
 				<div
