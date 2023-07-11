@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const route = useRoute();
 const redirects = [
-	{ name: 'XP Contribution', path: '/' },
-	{ name: 'Weekly Stats', path: '/event' },
+	{ name: "Total XP contributed", path: "/" },
+	{ name: "Weekly Progress", path: "/weekly" },
 ];
 </script>
 
@@ -10,8 +10,10 @@ const redirects = [
 	<header class="lg:h-full lg:w-fit z-50">
 		<h1 class="font-fira text-center text-3xl">Calvish [bean]</h1>
 		<div class="mt-2 pt-4 lg:pl-4 space-y-2 border-slate-500">
-			<NuxtLink v-for="item in redirects" :href="item.path"
-				class="block relative px-4 py-2 hover:bg-neutral-800 text-center lg:text-left text-neutral-400 hover:text-white rounded transition-all">
+			<NuxtLink
+				v-for="item in redirects"
+				:href="item.path"
+				class="block relative px-4 py-2 hover:bg-white/10 font-medium text-center lg:text-left text-neutral-400 hover:text-white rounded transition-all">
 				{{ item.name }}
 			</NuxtLink>
 		</div>
@@ -20,6 +22,6 @@ const redirects = [
 
 <style scoped>
 .router-link-active {
-	@apply underline underline-offset-8 font-medium text-white
+	@apply bg-white/20 text-white;
 }
 </style>
