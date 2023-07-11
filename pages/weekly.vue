@@ -19,6 +19,7 @@ type PlayerScore = {
 	username: string;
 	rank: string;
 	score: number;
+	online: string | null;
 	progress: {
 		playtime: number;
 		contributed: number;
@@ -30,6 +31,15 @@ const { data, pending, error, refresh } = await useLazyFetch<PlayerScore[]>(
 	useRuntimeConfig().public.endpoint + "/event/weekly/score",
 	{ server: false, key: "weekly/score" }
 );
+
+let interval: NodeJS.Timer;
+onMounted(() => {
+	interval = setInterval(refresh, 10000);
+});
+
+onUnmounted(() => {
+	clearInterval(interval);
+});
 
 // ------ Chart ------
 
@@ -126,9 +136,13 @@ function getNth(n: number) {
 
 		<div class="text-xl mb-8">{{ countdown }}</div>
 
-		<div class="w-full h-80 lg:w-10/12 mb-8">
+		<div class="w-full h-80 lg:w-10/12 mb-2">
 			<Bar v-if="data" :options="chartOptions" :data="chartData" />
 		</div>
+
+		<p class="ml-auto mb-4 text-neutral-400">
+			Data automatically refreshes!
+		</p>
 
 		<!-- skeleton -->
 		<div
@@ -168,6 +182,7 @@ function getNth(n: number) {
 				:key="player.uuid"
 				class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-700 rounded"
 				:class="{ 'brightness-50': player.score == 0 }">
+				<!-- absolutely positioned box -->
 				<div
 					v-if="player.score > 0"
 					class="absolute md:-top-4 md:-left-4 -top-2 -left-2">
@@ -186,6 +201,19 @@ function getNth(n: number) {
 						</p>
 					</div>
 				</div>
+
+				<div
+					v-if="player.online"
+					class="absolute top-4 right-4 flex items-center">
+					<img
+						src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
+						class="w-5 mr-1"
+						alt="" />
+					<p>
+						{{ player.online }}
+					</p>
+				</div>
+
 				<img
 					:src="`https://mc-heads.net/body/${player.uuid}`"
 					loading="lazy"
