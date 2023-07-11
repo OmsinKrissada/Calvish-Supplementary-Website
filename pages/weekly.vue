@@ -28,7 +28,7 @@ type PlayerScore = {
 
 const { data, pending, error, refresh } = await useLazyFetch<PlayerScore[]>(
 	useRuntimeConfig().public.endpoint + "/event/weekly/score",
-	{ server: true, key: "weekly/score" }
+	{ server: false, key: "weekly/score" }
 );
 
 // ------ Chart ------

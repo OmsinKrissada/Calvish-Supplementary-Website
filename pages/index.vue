@@ -37,7 +37,7 @@ const {
 	refresh: refreshGuild,
 } = await useLazyFetch<Guild>(
 	"https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish",
-	{ server: true, key: "xp" }
+	{ server: false, key: "xp" }
 );
 const leaderboard = computed(() => {
 	return guild.value?.members.sort((a, b) => b.contributed - a.contributed);
