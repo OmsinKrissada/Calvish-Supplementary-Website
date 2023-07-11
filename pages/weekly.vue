@@ -11,8 +11,7 @@ import {
 	ChartOptions,
 	ChartData,
 } from "chart.js";
-import { useNow, useTimestamp } from "@vueuse/core";
-import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
+import { useNow } from "@vueuse/core";
 
 type PlayerScore = {
 	uuid: string;
@@ -111,7 +110,8 @@ const countdown = computed(() => {
 	// return nextResetDate.value ? formatDistanceToNowStrict() : 'Error';
 	if (!nextResetDate.value) return "";
 	const diff =
-		new Date(nextResetDate.value.date).valueOf() - useNow().value.valueOf();
+		new Date(nextResetDate.value.date).valueOf() -
+		useNow({ interval: 200 }).value.valueOf();
 
 	if (diff >= 0) return `Next reset in ${fullDurationString(diff / 1000)}`;
 	else return "Score has been reset. Please refresh.";

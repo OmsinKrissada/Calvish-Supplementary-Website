@@ -7,19 +7,7 @@ import { Guild } from "../utils/types";
 const preSeason2Members = xp_before_season2.members;
 const postSeason2Members = xp_after_season2.members;
 
-const formatter_2 = Intl.NumberFormat("en", {
-	useGrouping: true,
-	maximumFractionDigits: 2,
-});
 const formatter_3 = Intl.NumberFormat("en", { useGrouping: true });
-
-const countdown = computed(() => {
-	const diff =
-		new Date("2022-11-22T00:50:00Z").valueOf() - useNow().value.valueOf();
-
-	if (diff >= 1) return `Ends in ${fullDurationString(diff / 1000)}`;
-	else return "The event has ended!";
-});
 
 const preSeason2Contrib = preSeason2Members.reduce(
 	(r, c) => r.set(c.name, c.contributed),
@@ -77,13 +65,9 @@ onMounted(async () => {
 	interval = setInterval(async () => {
 		await refreshGuild();
 		console.log("Refreshed!");
-	}, 3000);
+	}, 10000);
 });
 
-watch(
-	() => route.query,
-	() => (view.value = (route.query.view as string) ?? "all")
-);
 function handleViewSelect(path: string) {
 	const router = useRouter();
 	router.replace(path);
