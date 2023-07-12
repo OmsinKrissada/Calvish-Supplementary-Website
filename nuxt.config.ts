@@ -3,12 +3,12 @@ export default defineNuxtConfig({
 	typescript: {
 		shim: false
 	},
-	modules:[
+	modules: [
 		'@nuxtjs/google-fonts',
 		'nuxt-headlessui',
 	],
 	css: ['~/assets/css/main.css'],
-	plugins: [{ src: '~/plugins/vercel.js', mode: 'client' }],
+	plugins: [{ src: '~/plugins/vercel.ts', mode: 'client' }],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -18,7 +18,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			enableAnalytics: false,
-			endpoint:'https://krissada.com/api/calvish'
+			endpoint: 'https://krissada.com/api/calvish'
 		}
 	},
 	googleFonts: {

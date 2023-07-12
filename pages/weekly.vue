@@ -136,7 +136,7 @@ function getNth(n: number) {
 
 		<div class="text-xl mb-8">{{ countdown }}</div>
 
-		<div class="w-full h-80 lg:w-10/12 mb-2">
+		<div class="w-full h-48 lg:w-10/12 mb-2">
 			<Bar v-if="data" :options="chartOptions" :data="chartData" />
 		</div>
 
