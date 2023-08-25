@@ -34,3 +34,16 @@ export interface Guild {
 		version: number;
 	};
 };
+
+export type PlayerScore = {
+	uuid: string;
+	username: string;
+	rank: string;
+	score: number;
+	online: string | null;
+	progress: {
+		playtime: number;
+		contributed: number;
+		wars: 0;
+	};
+};
