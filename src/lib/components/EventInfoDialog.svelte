@@ -61,31 +61,23 @@
 						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 						<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
 							How are the scores calculated?
-							<!-- <p>** 2 Jan UPDATE</p> -->
 						</HeadlessDialogTitle>
 						<div class="mt-2 space-y-2 text-sm">
-							<!-- <p class="text-sm text-gray-500"> -->
 							<p>Your score is calculated from your weekly stats.</p>
 							<p>
 								This includes your
 								<span class="underline">contributed xp</span>
 								and
 								<span class="underline">play time</span>.
-								<!-- This includes your <span class="underline">contributed xp</span>, <span
-											class="underline">play
-											time</span>, and <span class="underline">the number of wars you
-											participated</span>. -->
 							</p>
-							<!-- <p>Each category has different weight:</p> -->
 							<ol class="list-decimal list-inside">
 								<li>Contributed XP &rarr; 1 point per million xp</li>
 								<li>Play time &rarr; 0.5 point per hour</li>
-								<!-- <li>War count &rarr; 1 point per round</li> -->
 							</ol>
-							<!-- </p> -->
+							<p class="font-bold">Resets at the start of every Monday (UTC)</p>
 						</div>
 
-						<div class="flex flex-col gap-4 mt-8">
+						<div class="flex flex-col gap-4 mt-4">
 							<div class="flex items-center text-sm">
 								<input
 									type="checkbox"
