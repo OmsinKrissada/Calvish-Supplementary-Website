@@ -1,6 +1,6 @@
 <script>
-	import Banner from '../components/Banner.svelte';
-	import TheNav from '../components/TheNav.svelte';
+	import Banner from '$lib/components/Banner.svelte';
+	import TheNav from '$lib/components/TheNav.svelte';
 	import '../app.postcss';
 
 	import { dev } from '$app/environment';
@@ -23,18 +23,16 @@
 <div style="min-height: 100dvh;" class="fixed min-h-screen w-full bg-black" />
 <div
 	style="min-height: 100dvh;"
-	class="fixed min-h-screen w-full bg-gradient-to-t from-black to-teal-900/50"
-/>
+	class="fixed min-h-screen w-full bg-gradient-to-t from-black to-teal-900/50" />
 
 <div
 	style="min-height: 100dvh;"
-	class="flex flex-col lg:flex-row relative min-h-screen p-4 pt-10 sm:p-10 text-slate-200"
->
+	class="flex flex-col lg:flex-row relative min-h-screen p-4 pt-10 sm:p-10 text-slate-200">
 	<TheNav />
 	<div class="relative lg:hidden h-1 w-12 mx-auto my-10 bg-emerald-500 rounded z-10" />
 	<div class="relative flex-grow z-10">
 		{#key data.currentPath}
-			<div in:fly={{ y: -30, duration: 500, delay: 150 }} out:fly={{ y: -30, duration: 250 }}>
+			<div in:fly={{ y: -30, duration: 500, delay: 250 }} out:fly={{ y: -30, duration: 250 }}>
 				<slot />
 			</div>
 		{/key}

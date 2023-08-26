@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import LiquidEmeraldStack from '../components/LiquidEmeraldStack.svelte';
+	import LiquidEmeraldStack from '$lib/components/LiquidEmeraldStack.svelte';
 	import { invalidate, invalidateAll } from '$app/navigation';
 
 	export let data;
@@ -56,8 +56,7 @@
 			<div
 				class="h-2 w-0 bg-emerald-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
 				style:width={data.guild.xp + '%'}
-				style:transitionProperty="width"
-			/>
+				style:transitionProperty="width" />
 		</div>
 	</div>
 
@@ -66,16 +65,14 @@
 		<ul class="sm:hidden mt-4 space-y-2 sm:w-max mx-auto">
 			{#each members as m, i (m.uuid)}
 				<li
-					class="relative flex flex-wrap flex-row items-center justify-between sm:items-center space-x-8 p-2 m-1 bg-black/10 border border-neutral-800 rounded shadow-white/60"
-				>
+					class="relative flex flex-wrap flex-row items-center justify-between sm:items-center space-x-8 p-2 m-1 bg-black/10 border border-neutral-800 rounded shadow-white/60">
 					<div>
 						<span class="inline-block w-3 font-bold text-slate-400">{i + 1}</span>
 						<img
 							src="https://mc-heads.net/avatar/{m.uuid}/8"
 							alt=""
 							loading="lazy"
-							class="inline w-5 ml-8 mr-2 pixelated rounded-sm"
-						/>
+							class="inline w-5 ml-8 mr-2 pixelated rounded-sm" />
 						<a href="https://wynncraft.com/stats/player/{m.name}" class="font-medium text-md">
 							{m.name}
 						</a>
@@ -93,8 +90,7 @@
 			{/each}
 		</ul>
 		<table
-			class="hidden sm:table mt-4 mx-auto border-collapse border rounded-lg overflow-hidden text-white"
-		>
+			class="hidden sm:table mt-4 mx-auto border-collapse border rounded-lg overflow-hidden text-white">
 			<thead>
 				<tr class="bg-teal-700/60">
 					<th class="py-2 px-4 text-left font-semibold">#</th>
@@ -114,8 +110,7 @@
 									src="https://mc-heads.net/avatar/{m.uuid}/8"
 									alt=""
 									loading="lazy"
-									class="w-6 h-6 pixelated rounded-md"
-								/>
+									class="w-6 h-6 pixelated rounded-md" />
 								<a href="https://wynncraft.com/stats/player/{m.name}" class="ml-3 font-medium">
 									{m.name}
 								</a>
@@ -134,8 +129,7 @@
 							<div class="w-full h-1 mt-1 bg-white/30 rounded-full">
 								<div
 									style:width={`${(m.contributed / totalXp) * 100}%`}
-									class="h-full ml-auto bg-emerald-500 rounded-full"
-								/>
+									class="h-full ml-auto bg-emerald-500 rounded-full" />
 							</div>
 						</td>
 					</tr>

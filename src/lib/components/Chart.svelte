@@ -10,10 +10,10 @@
 		LinearScale
 	} from 'chart.js';
 	import type { ChartOptions, ChartData } from 'chart.js';
-	import type { PlayerScore } from '$lib/types';
+	import type { MinimalPlayerScore } from '$lib/types';
 	import { onMount } from 'svelte';
 
-	export let scores: PlayerScore[];
+	export let scores: MinimalPlayerScore[];
 
 	ChartJS.register(Title, Tooltip, Legend, BarController, BarElement, CategoryScale, LinearScale);
 
@@ -22,6 +22,23 @@
 		backgroundColor: '#2dd4bf',
 		aspectRatio: 0,
 		color: '#2dd4bf',
+		animation: {
+			duration: 0
+		},
+		animations: {
+			x: {
+				duration: 0
+			},
+			radius: {
+				duration: 0
+			},
+			y: {
+				duration: 1000
+			},
+			tension: {
+				duration: 0
+			}
+		},
 		scales: {
 			x: {
 				grid: {
@@ -71,6 +88,7 @@
 				datasets: [{ label: 'score', data: filtered.map((d) => d.score) ?? [] }]
 			};
 		} else {
+			chartData.labels = filtered.map((d) => d.username);
 			chartData.datasets[0].data = filtered.map((d) => d.score);
 		}
 		if (chart) chart.update();

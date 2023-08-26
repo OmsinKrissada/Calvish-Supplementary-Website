@@ -33,7 +33,7 @@ export interface Guild {
 		timestamp: number;
 		version: number;
 	};
-};
+}
 
 export type PlayerScore = {
 	uuid: string;
@@ -44,6 +44,15 @@ export type PlayerScore = {
 	progress: {
 		playtime: number;
 		contributed: number;
-		wars: 0;
+	};
+};
+
+export type MinimalPlayerScore = {
+	uuid: string;
+	username: string;
+	score: number;
+	progress: {
+		playtime: number;
+		contributed: number;
 	};
 };

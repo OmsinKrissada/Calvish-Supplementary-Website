@@ -43,8 +43,7 @@
 			enterTo="opacity-100"
 			leave="duration-200 ease-in"
 			leaveFrom="opacity-100"
-			leaveTo="opacity-0"
-		>
+			leaveTo="opacity-0">
 			<div class="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
 		</HeadlessTransitionChild>
 		<div class="fixed inset-0 overflow-y-auto">
@@ -56,12 +55,10 @@
 					enterTo="opacity-100 scale-100"
 					leave="duration-200 ease-in"
 					leaveFrom="opacity-100 scale-100"
-					leaveTo="opacity-0 scale-95"
-				>
+					leaveTo="opacity-0 scale-95">
 					<!-- The following div was once a DialogPanel -->
 					<div
-						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-					>
+						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 						<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
 							How are the scores calculated?
 							<!-- <p>** 2 Jan UPDATE</p> -->
@@ -95,15 +92,13 @@
 									name="persistent"
 									id="persistent"
 									bind:checked={persistent}
-									class="mr-2"
-								/>
+									class="mr-2" />
 								<label for="persistent">Do not show this again.</label>
 							</div>
 							<button
 								type="button"
 								class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 font-medium text-sm text-white rounded"
-								on:click={closeModalButton}
-							>
+								on:click={closeModalButton}>
 								Got it, thanks!
 							</button>
 						</div>

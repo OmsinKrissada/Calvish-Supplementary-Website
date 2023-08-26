@@ -1,6 +1,6 @@
-import { readable, writable } from "svelte/store";
-import type { PlayerScore } from "./types";
-import { env } from "$env/dynamic/public";
+import { readable, writable } from 'svelte/store';
+import type { PlayerScore } from './types';
+import { env } from '$env/dynamic/public';
 
 export const timestamp = readable(new Date(), (set, update) => {
 	const interval = setInterval(() => {
@@ -9,8 +9,6 @@ export const timestamp = readable(new Date(), (set, update) => {
 	return () => clearInterval(interval);
 });
 
-
-export const calvishScores = writable<PlayerScore[]>([], (set, update) => {
-});
+export const calvishScores = writable<PlayerScore[]>([], (set, update) => {});
 
 // export const localStorageStore = writable(localStorage.getItem())

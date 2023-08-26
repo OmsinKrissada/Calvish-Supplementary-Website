@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useNow, useTimestamp } from "@vueuse/core";
-import { TransitionGroup } from "vue";
-import { Guild } from "../utils/types";
+import { useNow, useTimestamp } from '@vueuse/core';
+import { TransitionGroup } from 'vue';
+import { Guild } from '../utils/types';
 // import { members as oldMembers } from 'xp_before_season2.json';
 
 const preSeason2Members = xp_before_season2.members;
 const postSeason2Members = xp_after_season2.members;
 
-const formatter_3 = Intl.NumberFormat("en", { useGrouping: true });
+const formatter_3 = Intl.NumberFormat('en', { useGrouping: true });
 
 const preSeason2Contrib = preSeason2Members.reduce(
 	(r, c) => r.set(c.name, c.contributed),
@@ -22,40 +22,35 @@ const {
 	data: guild,
 	pending,
 	error,
-	refresh: refreshGuild,
+	refresh: refreshGuild
 } = await useLazyFetch<Guild>(
-	"https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish",
-	{ server: false, key: "xp" }
+	'https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish',
+	{ server: false, key: 'xp' }
 );
 const leaderboard = computed(() => {
 	return guild.value?.members.sort((a, b) => b.contributed - a.contributed);
 });
 
 const route = useRoute();
-const view = ref<string>((route.query.view as string) ?? "all");
+const view = ref<string>((route.query.view as string) ?? 'all');
 
 const members = computed(() => {
-	if (view.value === "season")
+	if (view.value === 'season')
 		return leaderboard.value
 			?.filter(
-				m =>
-					(postSeason2Contrib.get(m.name) ?? 0) -
-						(preSeason2Contrib.get(m.name) ?? 0) >
-					0
+				(m) => (postSeason2Contrib.get(m.name) ?? 0) - (preSeason2Contrib.get(m.name) ?? 0) > 0
 			)
 			.sort(
 				(a, b) =>
 					(postSeason2Contrib.get(b.name) ?? 0) -
 					(preSeason2Contrib.get(b.name) ?? 0) -
-					((postSeason2Contrib.get(a.name) ?? 0) -
-						(preSeason2Contrib.get(a.name) ?? 0))
+					((postSeason2Contrib.get(a.name) ?? 0) - (preSeason2Contrib.get(a.name) ?? 0))
 			);
-	else
-		return leaderboard.value?.sort((a, b) => b.contributed - a.contributed);
+	else return leaderboard.value?.sort((a, b) => b.contributed - a.contributed);
 });
 
 const total = ref(0);
-leaderboard.value?.map(m => (total.value += m.contributed));
+leaderboard.value?.map((m) => (total.value += m.contributed));
 
 const gridView = ref(false);
 
@@ -64,7 +59,7 @@ onMounted(async () => {
 	// await fetchGuild();
 	interval = setInterval(async () => {
 		await refreshGuild();
-		console.log("Refreshed!");
+		console.log('Refreshed!');
 	}, 10000);
 });
 
@@ -79,8 +74,7 @@ onUnmounted(() => clearInterval(interval));
 <template>
 	<div>
 		<div class="flex flex-col items-center">
-			<div
-				class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
+			<div class="flex flex-col items-center sm:flex-row space-y-5 sm:space-x-5 sm:space-y-0">
 				<LiquidEmeraldStack />
 				<h3 class="font-medium text-2xl text-slate-200">
 					XP Contribution
@@ -93,15 +87,13 @@ onUnmounted(() => clearInterval(interval));
 		</div>
 
 		<div class="my-10">
-			<p class="mb-2 font-medium text-center">
-				Guild Level: {{ guild?.level }} ({{ guild?.xp }}%)
-			</p>
+			<p class="mb-2 font-medium text-center">Guild Level: {{ guild?.level }} ({{ guild?.xp }}%)</p>
 			<div class="max-w-md mx-auto bg-white/20 rounded-md">
 				<div
 					class="h-2 w-0 bg-emerald-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
 					:style="{
 						width: guild?.xp + '%',
-						'transition-property': 'width',
+						'transition-property': 'width'
 					}" />
 			</div>
 		</div>
@@ -159,20 +151,15 @@ onUnmounted(() => clearInterval(interval));
 					class="relative flex flex-wrap flex-row justify-between sm:items-center space-x-8 p-2 m-1 bg-black/10 border border-neutral-800 rounded shadow-white/60"
 					:class="{
 						'bg-gradient-to-r from-orange-800/60 to-yellow-600/60 border-yellow-600 winner-shadow':
-							view === 'season' && i === 0,
+							view === 'season' && i === 0
 					}">
 					<div>
-						<span
-							class="inline-block w-3 font-bold text-slate-400"
-							>{{ i + 1 }}</span
-						>
+						<span class="inline-block w-3 font-bold text-slate-400">{{ i + 1 }}</span>
 						<img
 							:src="`https://mc-heads.net/avatar/${m.uuid}/8`"
 							loading="lazy"
 							class="inline w-5 ml-8 mr-2 pixelated rounded-sm" />
-						<a
-							:href="`https://wynncraft.com/stats/player/${m.name}`"
-							class="font-medium text-md">
+						<a :href="`https://wynncraft.com/stats/player/${m.name}`" class="font-medium text-md">
 							{{ m.name }}
 							<!-- <span class="hidden sm:inline">
                 ({{ m.rank }})
@@ -180,8 +167,7 @@ onUnmounted(() => clearInterval(interval));
 						</a>
 					</div>
 					<div>
-						<span
-							class="right-3 font-mono text-right text-slate-300">
+						<span class="right-3 font-mono text-right text-slate-300">
 							<!-- <span v-if="view === 'all' && m.contributed - (preSeason2Contrib.get(m.name) ?? 0) >= 0.005"
 								class="hidden sm:inline text-emerald-500">
 								+{{ formatter_2.format((m.contributed - (preSeason2Contrib.get(m.name) ?? 0)) /
@@ -190,22 +176,14 @@ onUnmounted(() => clearInterval(interval));
 							</span> -->
 							{{
 								formatter_3.format(
-									view === "all"
+									view === 'all'
 										? m.contributed
-										: (postSeason2Contrib.get(m.name) ??
-												0) -
-												(preSeason2Contrib.get(
-													m.name
-												) ?? 0)
+										: (postSeason2Contrib.get(m.name) ?? 0) - (preSeason2Contrib.get(m.name) ?? 0)
 								)
 							}}
 							XP
 							<p v-if="view === 'all'" class="text-sm">
-								({{
-									formatter_3.format(
-										(m.contributed / total) * 100
-									)
-								}}%)
+								({{ formatter_3.format((m.contributed / total) * 100) }}%)
 							</p>
 						</span>
 					</div>
