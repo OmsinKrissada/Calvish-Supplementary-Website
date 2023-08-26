@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { env } from '$env/dynamic/public';
 	import { onMount } from 'svelte';
 
 	const redirects = [
@@ -9,9 +10,11 @@
 	];
 
 	let touchCounter = 0;
+	let globalTouchBuffer = 0;
 
 	function updateTouchCounter() {
 		touchCounter++;
+		globalTouchBuffer++;
 		localStorage.setItem('touchCounter', `${touchCounter}`);
 	}
 	onMount(() => {
@@ -19,6 +22,18 @@
 		if (!isNaN(count)) {
 			touchCounter = count;
 		}
+
+		setInterval(async () => {
+			if (globalTouchBuffer <= 0) return;
+			await fetch(env.PUBLIC_ENDPOINT + '/grass', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ count: globalTouchBuffer })
+			});
+			globalTouchBuffer = 0;
+		}, 1000);
 	});
 </script>
 
