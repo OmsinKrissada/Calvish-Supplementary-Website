@@ -29,8 +29,8 @@
 	style="min-height: 100dvh;"
 	class="flex flex-col lg:flex-row relative min-h-screen p-4 pt-10 sm:p-10 text-slate-200">
 	<TheNav />
-	<div class="relative lg:hidden h-1 w-12 mx-auto my-10 bg-emerald-500 rounded z-10" />
-	<div class="relative flex-grow z-10">
+	<!-- <div class="relative lg:hidden h-1 w-12 mx-auto my-10 bg-emerald-500 rounded z-10" /> -->
+	<div class="mt-20 lg:mt-0 relative flex-grow z-10">
 		{#key data.currentPath}
 			<div in:fly={{ y: -30, duration: 500, delay: 250 }} out:fly={{ y: -30, duration: 250 }}>
 				<slot />
