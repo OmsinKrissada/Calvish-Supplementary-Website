@@ -26,17 +26,8 @@
 			duration: 0
 		},
 		animations: {
-			x: {
-				duration: 0
-			},
-			radius: {
-				duration: 0
-			},
 			y: {
 				duration: 1000
-			},
-			tension: {
-				duration: 0
 			}
 		},
 		scales: {
