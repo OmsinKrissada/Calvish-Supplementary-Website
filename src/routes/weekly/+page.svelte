@@ -100,29 +100,33 @@
 	<div class="flex items-center ml-auto mb-4">
 		<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
 		<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
-			<ListboxButton class="relative w-56 px-3 py-2 bg-white text-left rounded-md">
-				<span class="font-medium text-gray-600 truncate"
+			<ListboxButton
+				class="relative w-56 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
+				<span class="font-medium text-black truncate"
 					>{selectedWeek
 						? `${selectedWeek.start} - ${selectedWeek.end}`
 						: 'Loading records...'}</span>
-				<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+				<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500">
 					<Icon src={ChevronUpDown} size="24" />
 				</span>
 			</ListboxButton>
 			<Transition
-				enter="transition ease-in duration-100"
+				as="div"
+				enter="relative opacity-0 transition duration-150 z-50"
 				enterFrom="opacity-0 -translate-y-2"
 				enterTo="opacity-100"
-				leave="transition ease-in duration-100"
+				leave="relative opacity-100 transition duration-150 z-50"
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0 -translate-y-2">
-				<ListboxOptions class="absolute inset-x-0 mt-2 py-1 bg-white rounded-md z-10">
+				<ListboxOptions
+					class="absolute inset-x-0 mt-2 py-1 bg-neutral-950 border border-neutral-700 rounded-md z-10">
 					{#each weeks as week (week.id)}
 						<ListboxOption let:selected value={week}>
 							<div
-								class="flex items-center px-3 py-2 hover:bg-teal-100 text-black hover:text-teal-800 cursor-pointer"
+								class="flex items-center px-3 py-2 hover:bg-teal-950 hover:text-teal-300 focus:ring-0 cursor-pointer"
 								class:font-medium={selected}
-								class:text-teal-600={selected}>
+								class:text-teal-300={selected}
+								class:text-white={!selected}>
 								<p class="inline">{week.start} - {week.end}</p>
 								{#if selected}
 									<Icon src={CheckCircle} size="24" class="ml-auto" />
@@ -166,8 +170,8 @@
 		{#key displayScores}
 			<div
 				class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full"
-				in:fade={{ x: 30, duration: 250, delay: 250 }}
-				out:fade={{ x: -30, duration: 250 }}>
+				in:fade={{ duration: 250, delay: 250 }}
+				out:fade={{ duration: 250 }}>
 				{#each scores as player, i (player.uuid)}
 					<div
 						class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-700 rounded"
