@@ -4,6 +4,8 @@
 	import { format, subDays } from 'date-fns';
 
 	export let to: Date;
+	let className = '';
+	export { className as class };
 
 	const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
 
@@ -18,7 +20,7 @@
 	}
 </script>
 
-<div class="flex items-center w-11/12 sm:w-full mt-8 mb-8">
+<div class={className}>
 	<div class="absolute flex justify-center w-3 h-3 bg-emerald-500 rounded-full">
 		<p class="absolute top-full mt-2 text-xs text-neutral-400 whitespace-nowrap">
 			{format(subDays(to, 7), 'MMM dd')}

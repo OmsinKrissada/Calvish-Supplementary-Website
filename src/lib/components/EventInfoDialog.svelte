@@ -74,7 +74,7 @@
 								<li>Contributed XP &rarr; 1 point per million xp</li>
 								<li>Play time &rarr; 0.5 point per hour</li>
 							</ol>
-							<p class="font-bold">Resets at the start of every Monday (UTC)</p>
+							<p class="font-bold">Resets at noon every Monday (UTC)</p>
 						</div>
 
 						<div class="flex flex-col gap-4 mt-4">

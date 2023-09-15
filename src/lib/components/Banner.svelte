@@ -1,6 +1,6 @@
+<!-- <div class="block top-80 right-10 bg-black fixed-size"> -->
 <div
-	class="hidden sm:block sm:fixed top-80 right-10 -translate-x-1/2 scale-[2] brightness-[0.25] blur-sm bg-black"
-	style="width: 150px; height: 300px;">
+	class="hidden sm:block sm:fixed top-80 right-10 -translate-x-1/2 bg-black scale-[2] brightness-[0.25] blur-sm fixed-size">
 	<div class="banner-container">
 		<source
 			src="https://cdn.wynncraft.com/nextgen/banners/RHOMBUS_MIDDLE.svg"
@@ -37,9 +37,15 @@
 		background-color: black;
 	}
 
+	.fixed-size,
 	.banner-img-item {
-		position: absolute;
+		/* width: 15px;
+		height: 30px; */
 		width: 150px;
 		height: 300px;
+	}
+
+	.banner-img-item {
+		position: absolute;
 	}
 </style>
