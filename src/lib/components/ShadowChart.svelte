@@ -17,8 +17,8 @@
 	import { onMount } from 'svelte';
 
 	// export let points: number[];
-	let points: number[];
-	export let name: string;
+	export let points: number[];
+	// export let name: string;
 
 	ChartJS.register(
 		Title,
@@ -103,22 +103,22 @@
 	let gradient: CanvasGradient;
 	$: {
 		if (!chartData) {
-			console.log('no chartdata');
-			console.log(gradient);
+			// console.log('no chartdata');
+			// console.log(gradient);
 		} else {
-			console.log('has chart data');
+			// console.log('has chart data');
 			chartData.datasets[0].data = points;
 		}
 		if (chart) chart.update();
 	}
 	onMount(async () => {
-		points = await (await fetch(env.PUBLIC_ENDPOINT + `/weekly/player/${name}`)).json();
+		// points = await (await fetch(env.PUBLIC_ENDPOINT + `/weekly/player/${name}`)).json();
 		let ctx = chartCanvas.getContext('2d');
 		if (!ctx) throw 'ctx is not defined';
 		gradient = ctx.createLinearGradient(0, 0, 0, chartCanvas.height);
 		gradient.addColorStop(0, '#2dd4bf88');
 		gradient.addColorStop(1, '#2dd4bf22');
-		console.log(gradient);
+		// console.log(gradient);
 
 		chartData = {
 			labels: points,

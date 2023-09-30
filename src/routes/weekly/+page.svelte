@@ -19,7 +19,8 @@
 	import { CheckCircle, ChevronUpDown } from '@steeze-ui/heroicons';
 	import { format, subDays } from 'date-fns';
 	import { fade, fly } from 'svelte/transition';
-	import AreaChart from '$lib/components/ShadowChart.svelte';
+	import ShadowChart from '$lib/components/ShadowChart.svelte';
+	import InfoIcon from '$lib/components/InfoIcon.svelte';
 
 	export let data;
 
@@ -44,6 +45,7 @@
 
 	let weeks: { id: number; start: string; end: string }[];
 	let selectedWeek: { id: any; start: string; end: string };
+	$: showingCurrentWeek = selectedWeek && selectedWeek.id === weeks[0].id;
 	$: if (selectedWeek) {
 		if (selectedWeek.id === weeks[0].id) {
 			displayScores = null;
@@ -107,22 +109,24 @@
 		{/if}
 	</div>
 	<div class="flex justify-between w-full">
-		<!-- <div class="text-sm border-neutral-800 rounded-md">
-			<SwitchGroup as="div" class="ml-auto">
-				<Switch
-					class="{enableHistoryChart
-						? 'bg-gradient-to-l from-teal-600 to-teal-400'
-						: 'bg-white/20'} relative inline-flex h-4 w-9 mr-2 shrink-0 cursor-pointer rounded-full p-[2px] border-transparent transition-colors duration-200 ease-in-out"
-					id="history-chart-checkbox"
-					bind:checked={enableHistoryChart}>
-					<span
-						aria-hidden="true"
-						class={`${enableHistoryChart ? 'translate-x-5' : 'translate-x-0'}
+		{#if showingCurrentWeek}
+			<div class="hidden lg:block text-sm border-neutral-800 rounded-md">
+				<SwitchGroup as="div" class="ml-auto">
+					<Switch
+						class="{enableHistoryChart
+							? 'bg-gradient-to-l from-teal-600 to-teal-400'
+							: 'bg-white/20'} relative inline-flex h-4 w-9 mr-2 shrink-0 cursor-pointer rounded-full p-[2px] border-transparent transition-colors duration-200 ease-in-out"
+						id="history-chart-checkbox"
+						bind:checked={enableHistoryChart}>
+						<span
+							aria-hidden="true"
+							class={`${enableHistoryChart ? 'translate-x-5' : 'translate-x-0'}
 				  pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`} />
-				</Switch>
-				<SwitchLabel>Enable history shadow</SwitchLabel>
-			</SwitchGroup>
-		</div> -->
+					</Switch>
+					<SwitchLabel>Enable history shadow <InfoIcon /></SwitchLabel>
+				</SwitchGroup>
+			</div>
+		{/if}
 		<div class="flex flex-col items-center gap-2 ml-auto mb-4">
 			<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
 			<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
@@ -222,17 +226,21 @@
 							</div>
 						{/if}
 
-						{#if player.online}
-							<div class="absolute top-4 right-4 flex items-center">
-								<img
-									src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
-									class="w-5 mr-1"
-									alt="" />
-								<p>
-									{player.online}
-								</p>
-							</div>
-						{/if}
+						<div class="absolute top-4 right-4 flex flex-col gap-1 items-end">
+							{#if player.online}
+								<div class="flex items-center">
+									<img
+										src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
+										class="w-5 mr-1"
+										alt="" />
+									<p>
+										{player.online}
+									</p>
+								</div>
+							{/if}
+						</div>
+
+						<div class="absolute top-8 right-4" />
 
 						<img
 							src="https://mc-heads.net/body/{player.uuid}"
@@ -251,12 +259,29 @@
 							</p>
 
 							<div class="text-emerald-400">
-								<p>
-									{formatter.format(player.score)} points
-								</p>
+								{formatter.format(player.score)} points
+								<span class="ml-1" title="Change from previous week">
+									{#if player.history.at(-1) && player.score != player.history.at(-1)}
+										{@const percent =
+											((player.score - player.history.at(-1)) / player.history.at(-1)) * 100}
+										{@const absolutePercent = Math.abs(percent)}
+										<span class="text-neutral-400">-</span>
+										<span
+											class="text-sm"
+											class:text-red-400={percent < 0}
+											class:text-green-400={percent > 0}
+											>{percent > 0 ? '▲' : '▼'}
+											{absolutePercent > 1
+												? Math.round(absolutePercent)
+												: new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(
+														absolutePercent
+												  )}%</span>
+									{/if}
+								</span>
+
 								{#if enableHistoryChart && player.rank}
 									<div class="absolute top-0 -left-1 -bottom-2 -right-1 -z-10">
-										<AreaChart name={player.username} />
+										<ShadowChart points={[...player.history, player.score]} />
 									</div>
 								{/if}
 							</div>

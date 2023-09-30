@@ -40,6 +40,7 @@ export type PlayerScore = {
 	username: string;
 	rank: string;
 	score: number;
+	history: number[];
 	online: string | null;
 	progress: {
 		playtime: number;
