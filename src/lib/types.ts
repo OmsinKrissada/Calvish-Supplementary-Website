@@ -45,6 +45,7 @@ export type PlayerScore = {
 	progress: {
 		playtime: number;
 		contributed: number;
+		wars: number;
 	};
 };
 
@@ -55,5 +56,6 @@ export type MinimalPlayerScore = {
 	progress: {
 		playtime: number;
 		contributed: number;
+		wars: number;
 	};
 };

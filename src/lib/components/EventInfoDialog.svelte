@@ -9,7 +9,7 @@
 	} from '@rgossiaux/svelte-headlessui';
 
 	// current dialog id counter: 2
-	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < 2;
+	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < 3;
 	let persistent = false;
 
 	function closeModal() {
@@ -18,7 +18,7 @@
 
 	function closeModalButton() {
 		if (persistent) {
-			localStorage.setItem('seen_event_dialog', '2');
+			localStorage.setItem('seen_event_dialog', '3');
 		}
 		closeModal();
 	}
@@ -60,19 +60,21 @@
 					<div
 						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 						<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
-							How are the scores calculated?
+							[UPDATED] How are the scores calculated?
 						</HeadlessDialogTitle>
 						<div class="mt-2 space-y-2 text-sm">
 							<p>Your score is calculated from your weekly stats.</p>
 							<p>
 								This includes your
-								<span class="underline">contributed xp</span>
+								<span class="underline">contributed xp</span>,
+								<span class="underline">play time</span>
 								and
-								<span class="underline">play time</span>.
+								<span class="underline">the number of time you war</span>.
 							</p>
 							<ol class="list-decimal list-inside">
 								<li>Contributed XP &rarr; 1 point per million xp</li>
-								<li>Play time &rarr; 0.5 point per hour</li>
+								<li>Play time &rarr; 1 point per hour</li>
+								<li>Wars &rarr; 2 points per war</li>
 							</ol>
 							<p class="font-bold">Resets at noon every Monday (UTC)</p>
 						</div>

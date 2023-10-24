@@ -157,7 +157,7 @@
 									class:font-medium={selected}
 									class:text-teal-300={selected}
 									class:text-white={!selected}>
-									<p class="inline">{week.start} - {week.end}</p>
+									<p class="inline">{week.start} - {week.end} {week.id === 42 ? '(cursed)' : ''}</p>
 									{#if selected}
 										<Icon src={CheckCircle} size="24" class="ml-auto" />
 									{/if}
@@ -177,7 +177,7 @@
 				<div
 					class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-700 rounded">
 					<!-- player head -->
-					<div class="h-28 w-14 mr-6 my-2 bg-neutral-700 rounded-md animate-pulse" />
+					<div class="h-32 w-14 mr-6 my-0 bg-neutral-700 rounded-md animate-pulse" />
 
 					<div class="space-y-[0.625rem]">
 						<div class="w-20 min-h-[14px] my-[3px] bg-neutral-500 rounded-md animate-pulse" />
@@ -185,10 +185,12 @@
 							class="w-16 min-h-[14px] my-[3px] bg-emerald-800 text-neutral-400 rounded-md animate-pulse" />
 
 						<div
-							class="w-32 min-h-[14px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" />
+							class="w-32 min-h-[12px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" />
 
 						<div
-							class="w-28 min-h-[14px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" />
+							class="w-28 min-h-[12px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" />
+						<div
+							class="w-24 min-h-[12px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" />
 
 						<!-- <div
 						class="w-20 min-h-[14px] my-[3px] bg-neutral-600 text-neutral-400 rounded-md animate-pulse" /> -->
@@ -285,23 +287,28 @@
 									</div>
 								{/if}
 							</div>
-							<p class="text-neutral-400">
+							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
 								Contributed
 								<span class="text-white">{formatter.format(player.progress.contributed)}</span>
 								XP
 							</p>
-							<p class="text-neutral-400">
+							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
 								Play time:
 								<span class="text-white">{player.progress.playtime}</span>
 								hrs
 							</p>
-							<!-- <p class="text-neutral-400">
-							War:
-							<span class="text-white">{{
-								player.progress.wars
-							}}</span>
-							times
-						</p> -->
+							{#if !selectedWeek || selectedWeek.id >= 43}
+								<p
+									class="{!selectedWeek || selectedWeek.id >= 43
+										? 'text-sm'
+										: ''} text-neutral-400">
+									War:
+									<span class="text-white">
+										{player.progress.wars}
+									</span>
+									times
+								</p>
+							{/if}
 						</div>
 					</div>
 				{/each}
