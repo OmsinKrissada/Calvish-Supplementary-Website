@@ -88,7 +88,7 @@
 			</div>
 		{/key}
 	</div>
-	<Banner />
+	<!-- <Banner /> -->
 </div>
 
 <!-- <div class="hidden lg:block lg:fixed bottom-0 h-32 w-full bg-gradient-to-t from-black/40 to-transparent z-10" /> -->
