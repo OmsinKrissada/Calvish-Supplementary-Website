@@ -123,7 +123,9 @@
 							class={`${enableHistoryChart ? 'translate-x-5' : 'translate-x-0'}
 				  pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`} />
 					</Switch>
-					<SwitchLabel>Enable history shadow <InfoIcon /></SwitchLabel>
+					<SwitchLabel
+						>Enable history shadow <span class="text-xs text-neutral-400">(experimental)</span
+						></SwitchLabel>
 				</SwitchGroup>
 			</div>
 		{/if}

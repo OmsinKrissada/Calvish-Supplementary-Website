@@ -80,7 +80,7 @@
 					display: false
 				},
 				beginAtZero: true,
-				max: 582.01
+				max: 1477
 				// type: 'logarithmic'
 			}
 		},
@@ -131,7 +131,7 @@
 					pointStyle: false,
 					fill: 'start',
 					borderWidth: 1,
-					tension: 0.2
+					tension: 0
 				}
 			]
 		};
