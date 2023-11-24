@@ -124,12 +124,18 @@
 						</td>
 						<td class="py-3 px-4 font-mono text-xs text-right">
 							<span>
-								{formatterDecimal.format((m.contributed / totalXp) * 100)}%
+								{#if m.contributed / totalXp > 0 && m.contributed / totalXp < 0.00005}
+									{'< 0.01%'}
+								{:else if m.contributed / totalXp == 0}
+									None
+								{:else}
+									{formatterDecimal.format((m.contributed / totalXp) * 100)}%
+								{/if}
 							</span>
-							<div class="w-full h-1 mt-1 bg-white/30 rounded-full">
+							<div class="w-full h-1 mt-1 bg-white/30 rounded-full overflow-hidden">
 								<div
 									style:width={`${(m.contributed / totalXp) * 100}%`}
-									class="h-full ml-auto bg-emerald-500 rounded-full" />
+									class="h-full ml-auto bg-emerald-500" />
 							</div>
 						</td>
 					</tr>
