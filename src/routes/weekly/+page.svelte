@@ -289,7 +289,14 @@
 							</div>
 							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
 								Contributed
-								<span class="text-white">{formatter.format(player.progress.contributed)}</span>
+								<span
+									class="text-white"
+									title={Intl.NumberFormat('en').format(player.progress.contributed)}
+									>{new Intl.NumberFormat('en', {
+										notation: 'compact',
+										// minimumSignificantDigits: 3,
+										maximumSignificantDigits: 3
+									}).format(player.progress.contributed)}</span>
 								XP
 							</p>
 							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
