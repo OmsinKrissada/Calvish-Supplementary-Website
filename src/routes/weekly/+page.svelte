@@ -78,7 +78,7 @@
 				return {
 					id: w.id,
 					start: format(new Date(w.createdAt), 'MMM dd'),
-					end: w.endAt ? format(subDays(new Date(w.endAt), 1), 'MMM dd') : 'Now (Real-time)'
+					end: w.endAt ? format(subDays(new Date(w.endAt), 1), 'MMM dd') : 'Now'
 				};
 			})
 			.reverse();
