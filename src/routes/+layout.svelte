@@ -70,8 +70,12 @@
 			GRASS <span class="text-xs tracking-normal">(touch it)</span>
 		</p>
 		{#if touchCounter > 0}
-			<p class="text-center text-xs text-lime-200">You touched grass {touchCounter} times</p>
-			<p class="text-center text-xs text-lime-200">Global count: {globalTouchCount} times</p>
+			<p class="text-center text-xs text-lime-200">
+				You touched grass {Intl.NumberFormat('en').format(touchCounter)} times
+			</p>
+			<p class="text-center text-xs text-lime-200">
+				Global count: {Intl.NumberFormat('en').format(globalTouchCount)} times
+			</p>
 		{/if}
 		<button on:click={updateTouchCounter}>
 			<img
