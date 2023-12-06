@@ -59,10 +59,27 @@
 				});
 		}
 	}
+
 	async function fetchScore() {
 		return (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/score')).json()) as PlayerScore[];
 	}
 	onMount(async () => {
+		let eventSource = new EventSource(env.PUBLIC_ENDPOINT + '/weekly/score_event');
+		let i = 0;
+		eventSource.addEventListener('open', () => console.log('open'));
+		eventSource.onopen = () => console.log('open bruh');
+		// eventSource.addEventListener('', () => console.log('close'));
+		eventSource.onerror = (e) => {
+			console.log('error');
+		};
+		setInterval(() => console.log(eventSource.readyState), 1000);
+		eventSource.onmessage = (message) => {
+			console.log(`receiving data [${i}]`);
+			console.log(message.data);
+			i++;
+		};
+		console.log('registered');
+
 		currentScores = await fetchScore();
 		interval = setInterval(async () => {
 			currentScores = await fetchScore();
@@ -171,6 +188,13 @@
 			</Listbox>
 		</div>
 	</div>
+
+	<p class="font-medium text-sm text-red-400">
+		PLEASE IGNORE PLAYTIME FIELD AS IT IS INACCURATE DUE TO WYNNCRAFT API CHANGES
+	</p>
+	<p class="mb-8 font-medium text-sm text-red-400">
+		Points are calculated without taking playtime into account.
+	</p>
 
 	<!-- skeleton -->
 	{#if !scores || scores.length == 0}
