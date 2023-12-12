@@ -189,13 +189,6 @@
 		</div>
 	</div>
 
-	<p class="font-medium text-sm text-red-400">
-		PLEASE IGNORE PLAYTIME FIELD AS IT IS INACCURATE DUE TO WYNNCRAFT API CHANGES
-	</p>
-	<p class="mb-8 font-medium text-sm text-red-400">
-		Points are calculated without taking playtime into account.
-	</p>
-
 	<!-- skeleton -->
 	{#if !scores || scores.length == 0}
 		<div class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
