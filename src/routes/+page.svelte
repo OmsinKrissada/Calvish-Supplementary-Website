@@ -2,6 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import LiquidEmeraldStack from '$lib/components/LiquidEmeraldStack.svelte';
 	import { invalidate, invalidateAll } from '$app/navigation';
+	import { env } from '$env/dynamic/public';
 
 	export let data;
 
@@ -26,9 +27,9 @@
 	let interval: number;
 	onMount(async () => {
 		interval = setInterval(async () => {
-			invalidate('https://api.wynncraft.com/public_api.php?action=guildStats&command=Calvish');
+			invalidate(env.PUBLIC_ENDPOINT + '/guild');
 			console.log('Refreshed!');
-		}, 10000);
+		}, 10 * 60 * 1000);
 	});
 
 	onDestroy(() => clearInterval(interval));
@@ -50,12 +51,12 @@
 
 	<div class="my-10">
 		<p class="mb-4 font-medium text-center">
-			Guild Level: {data.guild.level} ({data.guild.xp}%)
+			Guild Level: {data.guild.level} ({data.guild.xpPercent}%)
 		</p>
 		<div class="max-w-md mx-auto bg-white/20 rounded-md">
 			<div
 				class="h-2 w-0 bg-emerald-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
-				style:width={data.guild.xp + '%'}
+				style:width={data.guild.xpPercent + '%'}
 				style:transitionProperty="width" />
 		</div>
 	</div>
@@ -73,8 +74,8 @@
 							alt=""
 							loading="lazy"
 							class="inline w-5 ml-8 mr-2 pixelated rounded-sm" />
-						<a href="https://wynncraft.com/stats/player/{m.name}" class="font-medium text-md">
-							{m.name}
+						<a href="https://wynncraft.com/stats/player/{m.username}" class="font-medium text-md">
+							{m.username}
 						</a>
 					</div>
 					<div>
@@ -111,8 +112,8 @@
 									alt=""
 									loading="lazy"
 									class="w-6 h-6 pixelated rounded-md" />
-								<a href="https://wynncraft.com/stats/player/{m.name}" class="ml-3 font-medium">
-									{m.name}
+								<a href="https://wynncraft.com/stats/player/{m.username}" class="ml-3 font-medium">
+									{m.username}
 								</a>
 							</div>
 						</td>

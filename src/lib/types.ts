@@ -19,19 +19,41 @@ export interface Banner {
 	layers: BannerLayer[];
 }
 
+export type GuildRanks = 'owner' | 'chief' | 'strategist' | 'captain' | 'recruiter' | 'recruit';
 export interface Guild {
-	name: string;
-	prefix: string;
-	members: Member[];
-	xp: number;
-	level: number;
-	created: Date;
-	createdFriendly: string;
-	territories: number;
-	banner: Banner;
-	request: {
-		timestamp: number;
-		version: number;
+	name: string,
+	prefix: string,
+	level: number,
+	xpPercent: number,
+	territories: number,
+	wars: number,
+	created: string,
+	members: {
+		uuid: string,
+		username: string,
+		rank: string,
+		online: boolean,
+		server: string | null,
+		contributed: number,
+		contributionRank: number,
+		joined: string,
+	}[],
+	online: number,
+	banner: {
+		base: string,
+		tier: number,
+		structure: string,
+		layers: {
+			colour: string,
+			pattern: string;
+		}[];
+
+	},
+	seasonRanks: {
+		[rank: number]: {
+			rating: number,
+			finalTerritories: number;
+		};
 	};
 }
 
