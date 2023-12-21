@@ -271,7 +271,7 @@
 						<div class="">
 							{#if player.rank}
 								<div class="font-bold text-xs text-neutral-500">
-									{player.rank}
+									{player.rank.toUpperCase()}
 								</div>
 							{/if}
 
