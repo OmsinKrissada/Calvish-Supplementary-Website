@@ -320,7 +320,7 @@
 							</p>
 							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
 								Play time:
-								<span class="text-white">{player.progress.playtime}</span>
+								<span class="text-white">{Math.round(player.progress.playtime)}</span>
 								hrs
 							</p>
 							{#if !selectedWeek || selectedWeek.id >= 43}
