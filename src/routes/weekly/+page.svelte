@@ -32,6 +32,7 @@
 	});
 
 	function getNth(n: number) {
+		if ([11, 12, 13].includes(n)) return 'th';
 		if ((n - 1) % 10 === 0) return 'st';
 		if ((n - 2) % 10 === 0) return 'nd';
 		if ((n - 3) % 10 === 0) return 'rd';
