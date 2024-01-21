@@ -73,7 +73,7 @@
 		eventSource.onerror = (e) => {
 			console.log('error');
 		};
-		setInterval(() => console.log(eventSource.readyState), 1000);
+		// setInterval(() => console.log(eventSource.readyState), 1000);
 		eventSource.onmessage = (message) => {
 			console.log(`receiving data [${i}]`);
 			console.log(message.data);
