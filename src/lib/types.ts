@@ -21,37 +21,36 @@ export interface Banner {
 
 export type GuildRanks = 'owner' | 'chief' | 'strategist' | 'captain' | 'recruiter' | 'recruit';
 export interface Guild {
-	name: string,
-	prefix: string,
-	level: number,
-	xpPercent: number,
-	territories: number,
-	wars: number,
-	created: string,
+	name: string;
+	prefix: string;
+	level: number;
+	xpPercent: number;
+	territories: number;
+	wars: number;
+	created: string;
 	members: {
-		uuid: string,
-		username: string,
-		rank: string,
-		online: boolean,
-		server: string | null,
-		contributed: number,
-		contributionRank: number,
-		joined: string,
-	}[],
-	online: number,
+		uuid: string;
+		username: string;
+		rank: string;
+		online: boolean;
+		server: string | null;
+		contributed: number;
+		contributionRank: number;
+		joined: string;
+	}[];
+	online: number;
 	banner: {
-		base: string,
-		tier: number,
-		structure: string,
+		base: string;
+		tier: number;
+		structure: string;
 		layers: {
-			colour: string,
+			colour: string;
 			pattern: string;
 		}[];
-
-	},
+	};
 	seasonRanks: {
 		[rank: number]: {
-			rating: number,
+			rating: number;
 			finalTerritories: number;
 		};
 	};
