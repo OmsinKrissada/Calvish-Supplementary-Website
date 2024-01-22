@@ -80,8 +80,8 @@
 					display: false
 				},
 				beginAtZero: true,
-				max: 7148.170354
-				// type: 'logarithmic'
+				max: 7148.170354,
+				type: 'logarithmic'
 			}
 		},
 		plugins: {
@@ -131,7 +131,8 @@
 					pointStyle: false,
 					fill: 'start',
 					borderWidth: 1,
-					tension: 0
+					tension: 0,
+					spanGaps: true
 				}
 			]
 		};

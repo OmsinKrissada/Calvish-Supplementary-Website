@@ -134,7 +134,7 @@
 		{/if}
 	</div>
 	<div class="flex justify-between w-full">
-		{#if showingCurrentWeek && tileView}
+		<!-- {#if showingCurrentWeek && tileView}
 			<div class="hidden lg:block text-sm border-neutral-800 rounded-md">
 				<SwitchGroup as="div" class="ml-auto">
 					<Switch
@@ -153,7 +153,7 @@
 						></SwitchLabel>
 				</SwitchGroup>
 			</div>
-		{/if}
+		{/if} -->
 		<div class="flex items-center gap-2 ml-auto mb-4">
 			<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
 			<div class="hidden sm:flex border border-white/30 rounded-md">
