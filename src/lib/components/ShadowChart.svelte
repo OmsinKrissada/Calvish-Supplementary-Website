@@ -80,7 +80,7 @@
 					display: false
 				},
 				beginAtZero: true,
-				max: 1477
+				max: 7148.170354
 				// type: 'logarithmic'
 			}
 		},

@@ -30,6 +30,11 @@
 		useGrouping: true,
 		maximumFractionDigits: 2
 	});
+	const compactFormatter = Intl.NumberFormat('en', {
+		notation: 'compact',
+		// minimumSignificantDigits: 3,
+		maximumSignificantDigits: 3
+	});
 
 	function getNth(n: number) {
 		if ([11, 12, 13].includes(n)) return 'th';
@@ -60,6 +65,8 @@
 				});
 		}
 	}
+
+	let tileView = true;
 
 	async function fetchScore() {
 		return (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/score')).json()) as PlayerScore[];
@@ -127,7 +134,7 @@
 		{/if}
 	</div>
 	<div class="flex justify-between w-full">
-		{#if showingCurrentWeek}
+		{#if showingCurrentWeek && tileView}
 			<div class="hidden lg:block text-sm border-neutral-800 rounded-md">
 				<SwitchGroup as="div" class="ml-auto">
 					<Switch
@@ -147,8 +154,36 @@
 				</SwitchGroup>
 			</div>
 		{/if}
-		<div class="flex flex-col items-center gap-2 ml-auto mb-4">
+		<div class="flex items-center gap-2 ml-auto mb-4">
 			<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
+			<div class="hidden sm:flex border border-white/30 rounded-md">
+				<button
+					on:click={() => {
+						tileView = false;
+					}}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="w-9 p-2 rounded {!tileView
+							? 'fill-white bg-white/20'
+							: 'fill-neutral-600 hover:fill-neutral-400'}"
+						viewBox="0 0 24 24"
+						><title>table</title><path
+							d="M22 20V4C22 2.9 21.1 2 20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20M4 6.5V4H20V6.5H4M4 11V8.5H20V11H4M4 15.5V13H20V15.5H4M4 20V17.5H20V20H4Z" /></svg>
+				</button>
+				<button
+					on:click={() => {
+						tileView = true;
+					}}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="w-9 p-2 rounded {tileView
+							? 'fill-white bg-white/20'
+							: 'fill-neutral-600 hover:fill-neutral-400'}"
+						viewBox="0 0 24 24"
+						><title>tile</title><path
+							d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4C2.92,22 2,21.1 2,20V4A2,2 0 0,1 4,2M4,4V11H11V4H4M4,20H11V13H4V20M20,20V13H13V20H20M20,4H13V11H20V4Z" /></svg>
+				</button>
+			</div>
 			<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
 				<ListboxButton
 					class="relative w-56 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
@@ -221,125 +256,182 @@
 	{:else}
 		<!-- actual one -->
 		{#key displayScores}
-			<div
-				class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full"
-				in:fade={{ duration: 250, delay: 250 }}
-				out:fade={{ duration: 250 }}>
-				{#each scores as player, i (player.uuid)}
-					<div
-						class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-500/50 rounded"
-						class:brightness-50={player.score == 0}>
-						<!-- absolutely positioned box -->
-						{#if player.score > 0}
-							<div class="absolute md:-top-4 md:-left-4 -top-2 -left-2">
-								{#if i == 0}
-									<img
-										src="https://lh3.googleusercontent.com/0CHvIkhgSfKcZp0CLKqjfv-mLiXZUlVu8LGNm7SIsFfL6HCdZhZsySLv6pbSOBQZ667r6BAAp_lJVbwMhtSkRaikqEMBk8TuI1Y=s400"
-										alt=""
-										class="w-10 -rotate-12" />
-								{:else}
-									<div
-										class="flex justify-center items-center w-10 leading-none mr-2 py-0.5 font-fira text-center bg-sky-800 border border-sky-600 rounded-full">
+			{#if tileView}
+				<div
+					class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full"
+					in:fade={{ duration: 250, delay: 250 }}
+					out:fade={{ duration: 250 }}>
+					{#each scores as player, i (player.uuid)}
+						<div
+							class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-500/50 rounded"
+							class:brightness-50={player.score == 0}>
+							<!-- absolutely positioned box -->
+							{#if player.score > 0}
+								<div class="absolute md:-top-4 md:-left-4 -top-2 -left-2">
+									{#if i == 0}
+										<img
+											src="https://lh3.googleusercontent.com/0CHvIkhgSfKcZp0CLKqjfv-mLiXZUlVu8LGNm7SIsFfL6HCdZhZsySLv6pbSOBQZ667r6BAAp_lJVbwMhtSkRaikqEMBk8TuI1Y=s400"
+											alt=""
+											class="w-10 -rotate-12" />
+									{:else}
+										<div
+											class="flex justify-center items-center w-10 leading-none mr-2 py-0.5 font-fira text-center bg-sky-800 border border-sky-600 rounded-full">
+											<p>
+												{i + 1}<span class="align-super text-xs">{getNth(i + 1)}</span>
+											</p>
+										</div>
+									{/if}
+								</div>
+							{/if}
+
+							<div class="absolute top-4 right-4 flex flex-col gap-1 items-end">
+								{#if player.online}
+									<div class="flex items-center">
+										<img
+											src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
+											class="w-5 mr-1"
+											alt="" />
 										<p>
-											{i + 1}<span class="align-super text-xs">{getNth(i + 1)}</span>
+											{player.online}
 										</p>
 									</div>
 								{/if}
 							</div>
-						{/if}
 
-						<div class="absolute top-4 right-4 flex flex-col gap-1 items-end">
-							{#if player.online}
-								<div class="flex items-center">
-									<img
-										src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
-										class="w-5 mr-1"
-										alt="" />
-									<p>
-										{player.online}
-									</p>
-								</div>
-							{/if}
-						</div>
+							<div class="absolute top-8 right-4" />
 
-						<div class="absolute top-8 right-4" />
-
-						<img
-							src="https://mc-heads.net/body/{player.uuid}"
-							alt=""
-							loading="lazy"
-							class="h-32 mr-6 rounded-sm" />
-						<div class="">
-							{#if player.rank}
-								<div class="font-bold text-xs text-neutral-500">
-									{player.rank.toUpperCase()}
-								</div>
-							{/if}
-
-							<p class="inline font-medium">
-								{player.username}
-							</p>
-
-							<div class="text-emerald-400">
-								{formatter.format(player.score)} points
-								<span class="ml-1" title="Change from previous week">
-									{#if player.history.at(-1) && player.score != player.history.at(-1)}
-										{@const percent =
-											((player.score - player.history.at(-1)) / player.history.at(-1)) * 100}
-										{@const absolutePercent = Math.abs(percent)}
-										<span class="text-neutral-400">-</span>
-										<span
-											class="text-sm"
-											class:text-red-400={percent < 0}
-											class:text-green-400={percent > 0}
-											>{percent > 0 ? '▲' : '▼'}
-											{absolutePercent > 1
-												? Math.round(absolutePercent)
-												: new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(
-														absolutePercent
-												  )}%</span>
-									{/if}
-								</span>
-
-								{#if enableHistoryChart && player.rank}
-									<div class="absolute top-0 -left-1 -bottom-2 -right-1 -z-10">
-										<ShadowChart points={[...player.history, player.score]} />
+							<img
+								src="https://mc-heads.net/body/{player.uuid}"
+								alt=""
+								loading="lazy"
+								class="h-32 mr-6 rounded-sm" />
+							<div class="">
+								{#if player.rank}
+									<div class="font-bold text-xs text-neutral-500">
+										{player.rank.toUpperCase()}
 									</div>
 								{/if}
-							</div>
-							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
-								Contributed
-								<span
-									class="text-white"
-									title={Intl.NumberFormat('en').format(player.progress.contributed)}
-									>{new Intl.NumberFormat('en', {
-										notation: 'compact',
-										// minimumSignificantDigits: 3,
-										maximumSignificantDigits: 3
-									}).format(player.progress.contributed)}</span>
-								XP
-							</p>
-							<p class="{!selectedWeek || selectedWeek.id >= 43 ? 'text-sm' : ''} text-neutral-400">
-								Play time:
-								<span class="text-white">{player.progress.playtime}</span>
-								hrs
-							</p>
-							{#if !selectedWeek || selectedWeek.id >= 43}
+
+								<p class="inline font-medium">
+									{player.username}
+								</p>
+
+								<div class="text-emerald-400">
+									{formatter.format(player.score)} points
+									<span class="ml-1" title="Change from previous week">
+										{#if player.history.at(-1) && player.score != player.history.at(-1)}
+											{@const percent =
+												((player.score - player.history.at(-1)) / player.history.at(-1)) * 100}
+											{@const absolutePercent = Math.abs(percent)}
+											<span class="text-neutral-400">-</span>
+											<span
+												class="text-sm"
+												class:text-red-400={percent < 0}
+												class:text-green-400={percent > 0}
+												>{percent > 0 ? '▲' : '▼'}
+												{absolutePercent > 1
+													? Math.round(absolutePercent)
+													: new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(
+															absolutePercent
+													  )}%</span>
+										{/if}
+									</span>
+
+									{#if enableHistoryChart && player.rank}
+										<div class="absolute top-0 -left-1 -bottom-2 -right-1 -z-10">
+											<ShadowChart points={[...player.history, player.score]} />
+										</div>
+									{/if}
+								</div>
 								<p
 									class="{!selectedWeek || selectedWeek.id >= 43
 										? 'text-sm'
 										: ''} text-neutral-400">
-									War:
-									<span class="text-white">
-										{player.progress.wars}
-									</span>
-									times
+									Contributed
+									<span
+										class="text-white"
+										title={Intl.NumberFormat('en').format(player.progress.contributed)}
+										>{compactFormatter.format(player.progress.contributed)}</span>
+									XP
 								</p>
-							{/if}
+								<p
+									class="{!selectedWeek || selectedWeek.id >= 43
+										? 'text-sm'
+										: ''} text-neutral-400">
+									Play time:
+									<span class="text-white">{player.progress.playtime}</span>
+									hrs
+								</p>
+								{#if !selectedWeek || selectedWeek.id >= 43}
+									<p
+										class="{!selectedWeek || selectedWeek.id >= 43
+											? 'text-sm'
+											: ''} text-neutral-400">
+										War:
+										<span class="text-white">
+											{player.progress.wars}
+										</span>
+										times
+									</p>
+								{/if}
+							</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{:else}
+				<table class="table w-full border border-white rounded-lg overflow-hidden text-white">
+					<thead>
+						<tr class="bg-black/60 border border-white/30">
+							<th class="py-2 px-4 text-left font-semibold">#</th>
+							<th class="py-2 px-4 text-left font-semibold">Username</th>
+							<!-- <th class="py-2 px-4 text-left font-semibold">Rank</th> -->
+							<th class="py-2 px-4 text-right font-semibold">Score</th>
+							<th class="py-2 px-4 text-right font-semibold">Contributed XP</th>
+							<th class="py-2 px-4 text-right font-semibold">Play time (hr)</th>
+							{#if !selectedWeek || selectedWeek.id >= 43}
+								<th class="py-2 px-4 text-right font-semibold">Wars</th>
+							{/if}
+						</tr>
+					</thead>
+					<tbody class="bg-black/30 divide-y divide-black/30">
+						{#each scores.filter((s) => s.score > 0) as player, i (player.uuid)}
+							<tr class="hover:bg-teal-900/30">
+								<td class="py-3 px-4 text-left font-medium">{i + 1}</td>
+								<td class="py-3 px-4">
+									<div class="flex items-center">
+										<img
+											src="https://mc-heads.net/avatar/{player.uuid}/8"
+											alt=""
+											loading="lazy"
+											class="w-6 h-6 pixelated rounded-md" />
+										<a
+											href="https://wynncraft.com/stats/player/{player.username}"
+											class="ml-3 font-medium">
+											{player.username}
+										</a>
+									</div>
+								</td>
+								<!-- <td class="py-3 px-4 text-right">
+				<span>{m.rank}</span>
+			</td> -->
+								<td class="py-3 px-4 text-sm text-right text-emerald-400">
+									<span>{formatter.format(player.score)}</span>
+								</td><td class="py-3 px-4 text-sm text-right">
+									<span>{formatter.format(player.progress.contributed)}</span>
+								</td>
+								<td class="py-3 px-4 text-sm text-right">
+									<span>{player.progress.playtime}</span>
+								</td>
+								{#if !selectedWeek || selectedWeek.id >= 43}
+									<td class="py-3 px-4 text-sm text-right">
+										<span>{player.progress.wars}</span>
+									</td>
+								{/if}
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{/if}
 		{/key}
 	{/if}
 </div>
