@@ -379,9 +379,9 @@
 					{/each}
 				</div>
 			{:else}
-				<table class="table w-full border border-white rounded-lg overflow-hidden text-white">
+				<table class="table w-full border-white rounded-lg overflow-hidden text-white">
 					<thead>
-						<tr class="bg-black/60 border border-white/30">
+						<tr class="bg-black/60 border-b border-white/30">
 							<th class="py-2 px-4 text-left font-semibold">#</th>
 							<th class="py-2 px-4 text-left font-semibold">Username</th>
 							<!-- <th class="py-2 px-4 text-left font-semibold">Rank</th> -->

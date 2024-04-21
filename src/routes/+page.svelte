@@ -91,7 +91,7 @@
 			{/each}
 		</ul>
 		<table
-			class="hidden sm:table mt-4 mx-auto border-collapse border rounded-lg overflow-hidden text-white">
+			class="hidden sm:table mt-4 mx-auto border-collapse rounded-lg overflow-hidden text-white">
 			<thead>
 				<tr class="bg-teal-700/60">
 					<th class="py-2 px-4 text-left font-semibold">#</th>
