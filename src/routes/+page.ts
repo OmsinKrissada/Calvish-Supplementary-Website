@@ -1,19 +1,20 @@
+export const ssr = false;
+
 import { env } from '$env/dynamic/public';
 import type { Guild } from '$lib/types';
 
 export async function load({ fetch }) {
 	const startTime = new Date().valueOf();
 
-	const res = await fetch(env.PUBLIC_ENDPOINT + '/guild');
-	const guild = (await res.json()) as Guild & { apiTime: number };
+	const guild = fetch(env.PUBLIC_ENDPOINT + '/guild').then((res) => res.json()) as Promise<
+		Guild & { apiTime: number }
+	>;
 
-	const overallTime = new Date().valueOf() - startTime;
-	const calvishApiTime = overallTime - guild.apiTime;
+	const members = guild.then((g) => g.members.sort((a, b) => b.contributed - a.contributed));
 
 	return {
+		startTime,
 		guild,
-		calvishApiTime,
-		wynnApiTime: overallTime - calvishApiTime,
-		overallTime,
+		members
 	};
 }

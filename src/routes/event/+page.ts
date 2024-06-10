@@ -3,17 +3,15 @@ import { browser } from '$app/environment';
 import type { Guild } from '$lib/types.js';
 
 export async function load({ fetch }) {
+	const members = fetch(env.PUBLIC_ENDPOINT + '/event').then((res) => res.json()) as Promise<
+		{ uuid: string; username: string; diff: number }[]
+	>;
+	const guild = fetch(env.PUBLIC_ENDPOINT + '/guild').then((res) => res.json()) as Promise<
+		Guild & { apiTime: number }
+	>;
 
-    let res = await fetch(env.PUBLIC_ENDPOINT + '/event');
-    const members = (await res.json()) as { uuid: string, username: string, diff: number }[];
-
-    res = await fetch(env.PUBLIC_ENDPOINT + '/guild');
-    const guild = (await res.json()) as Guild & { apiTime: number };
-
-
-    return {
-        members,
-        guild,
-        browser
-    };
+	return {
+		promises: Promise.all([members, guild]),
+		browser
+	};
 }

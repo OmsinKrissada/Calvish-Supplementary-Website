@@ -21,6 +21,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import ShadowChart from '$lib/components/ShadowChart.svelte';
 	import InfoIcon from '$lib/components/InfoIcon.svelte';
+	import ErrorText from '$lib/components/ErrorText.svelte';
 
 	export let data;
 
@@ -51,7 +52,7 @@
 
 	let weeks: { id: number; start: string; end: string }[];
 	let selectedWeek: { id: any; start: string; end: string };
-	$: showingCurrentWeek = selectedWeek && selectedWeek.id === weeks[0].id;
+	let error = '';
 	$: if (selectedWeek) {
 		if (selectedWeek.id === weeks[0].id) {
 			displayScores = null;
@@ -62,14 +63,18 @@
 				.then((res) => res.json())
 				.then((data) => {
 					if (selectedWeek.id === id) return (displayScores = data);
-				});
+				})
+				.catch((err) => (error = err));
 		}
 	}
 
 	let tileView = true;
 
-	async function fetchScore() {
-		return (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/score')).json()) as PlayerScore[];
+	function fetchScore() {
+		return fetch(env.PUBLIC_ENDPOINT + '/weekly/score')
+			.then((res) => res.json())
+			.catch((err) => (error = err)) as Promise<PlayerScore[]>;
+		// return (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/score')).json()) as PlayerScore[];
 	}
 	onMount(async () => {
 		let eventSource = new EventSource(env.PUBLIC_ENDPOINT + '/weekly/score_event');
@@ -226,7 +231,10 @@
 	</div>
 
 	<!-- skeleton -->
-	{#if !scores || scores.length == 0}
+	{#if error}
+		<ErrorText
+			text={`Unable to fetch data: ${error}, please let OmBean know if a reload doesn't help.`} />
+	{:else if !scores || scores.length == 0}
 		<div class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(300px,1fr))] w-full">
 			{#each { length: 40 } as _, i}
 				<div
@@ -333,7 +341,7 @@
 													? Math.round(absolutePercent)
 													: new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(
 															absolutePercent
-													  )}%</span>
+														)}%</span>
 										{/if}
 									</span>
 

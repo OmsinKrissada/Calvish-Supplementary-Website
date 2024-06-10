@@ -4,9 +4,13 @@
 // );
 import { env } from '$env/dynamic/public';
 
+// export const ssr = false;
+
 export async function load({ fetch }) {
 	// const scores = (await fetch(env.PUBLIC_ENDPOINT + "/weekly/score")).json() as Promise<PlayerScore[]>;
-	const nextReset = (await fetch(env.PUBLIC_ENDPOINT + '/weekly/nextreset')).json() as Promise<{
+	const nextReset = fetch(env.PUBLIC_ENDPOINT + '/weekly/nextreset').then((res) =>
+		res.json()
+	) as Promise<{
 		date: string;
 	}>;
 
