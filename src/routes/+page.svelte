@@ -19,22 +19,25 @@
 
 	// $: members = leaderboard.sort((a, b) => b.contributed - a.contributed);
 
-	let totalXp = 0;
 	// console.log(leaderboard);
 	// $: {
 	// 	totalXp = 0;
 	// 	leaderboard.map((m) => (totalXp += m.contributed));
 	// }
 
+	let totalXp = 0;
+
 	let interval: number;
 	onMount(async () => {
 		interval = setInterval(
 			async () => {
-				invalidate(env.PUBLIC_ENDPOINT + '/guild');
+				await invalidate(env.PUBLIC_ENDPOINT + '/guild');
+				totalXp = await data.totalXp;
 				console.log('Refreshed!');
 			},
 			10 * 60 * 1000
 		);
+		totalXp = await data.totalXp;
 	});
 
 	onDestroy(() => clearInterval(interval));
@@ -138,6 +141,7 @@
 								<td class="py-3 px-4 font-mono text-sm text-right">
 									<span>{formatterInteger.format(m.contributed)}</span>
 								</td>
+
 								<td class="py-3 px-4 font-mono text-xs text-right">
 									<span>
 										{#if m.contributed / totalXp > 0 && m.contributed / totalXp < 0.00005}

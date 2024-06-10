@@ -12,9 +12,12 @@ export async function load({ fetch }) {
 
 	const members = guild.then((g) => g.members.sort((a, b) => b.contributed - a.contributed));
 
+	const totalXp = members.then((members) => members.reduce((prev, m) => prev + m.contributed, 0));
+
 	return {
 		startTime,
 		guild,
-		members
+		members,
+		totalXp
 	};
 }
