@@ -74,33 +74,41 @@
 				</div>
 			</div>
 			<!-- Transition Group -->
-			<!-- <ul class="sm:hidden mt-4 space-y-2 sm:w-max mx-auto">
-				{#each members as m, i (m.uuid)}
-					<li
-						class="relative flex flex-wrap flex-row items-center justify-between sm:items-center space-x-8 p-2 m-1 bg-black/10 border border-neutral-800 rounded shadow-white/60">
-						<div>
-							<span class="inline-block w-3 font-bold text-slate-400">{i + 1}</span>
-							<img
-								src="https://mc-heads.net/avatar/{m.uuid}/8"
-								alt=""
-								loading="lazy"
-								class="inline w-5 ml-8 mr-2 pixelated rounded-sm" />
-							<a href="https://wynncraft.com/stats/player/{m.username}" class="font-medium text-md">
-								{m.username}
-							</a>
-						</div>
-						<div>
-							<span class="right-3 font-mono text-xs text-right text-slate-300">
-								{formatterInteger.format(m.contributed)}
-								XP
-								<p>
-									({formatterInteger.format((m.contributed / totalXp) * 100)}%)
-								</p>
-							</span>
-						</div>
-					</li>
-				{/each}
-			</ul> -->
+			<ul class="sm:hidden mt-4 space-y-2 sm:w-max mx-auto">
+				{#await data.members}
+					<div class="text-center mt-10">
+						<Loader />
+					</div>
+				{:then members}
+					{#each members as m, i (m.uuid)}
+						<li
+							class="relative flex flex-wrap flex-row items-center justify-between sm:items-center space-x-8 p-2 m-1 bg-black/10 border border-neutral-800 rounded shadow-white/60">
+							<div>
+								<span class="inline-block w-3 font-bold text-slate-400">{i + 1}</span>
+								<img
+									src="https://mc-heads.net/avatar/{m.uuid}/8"
+									alt=""
+									loading="lazy"
+									class="inline w-5 ml-8 mr-2 pixelated rounded-sm" />
+								<a
+									href="https://wynncraft.com/stats/player/{m.username}"
+									class="font-medium text-md">
+									{m.username}
+								</a>
+							</div>
+							<div>
+								<span class="right-3 font-mono text-xs text-right text-slate-300">
+									{formatterInteger.format(m.contributed)}
+									XP
+									<p>
+										({formatterInteger.format((m.contributed / totalXp) * 100)}%)
+									</p>
+								</span>
+							</div>
+						</li>
+					{/each}
+				{/await}
+			</ul>
 			<table
 				class="hidden sm:table mt-4 mx-auto border-collapse rounded-lg overflow-hidden text-white">
 				<thead>
