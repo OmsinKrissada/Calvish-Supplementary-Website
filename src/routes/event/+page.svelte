@@ -83,7 +83,7 @@
 							<!-- <td class="py-3 px-4 text-right">
         <span>{m.rank}</span>
     </td> -->
-							<td class="py-3 px-4 text-sm text-right">
+							<td class="py-3 px-4 font-mono text-sm text-right">
 								<span>{formatter.format(m.diff)}</span>
 							</td>
 						</tr>
