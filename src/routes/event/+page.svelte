@@ -47,16 +47,11 @@
 		</div>
 	{:then [members, guild]}
 		<section class="mx-4">
-			<div class="my-10">
-				<p class="mb-4 font-medium text-center">
-					Guild Level: {guild.level} ({guild.xpPercent}%)
+			<div class="my-10 text-center">
+				<p class="font-bold">GOAL REACHED!</p>
+				<p class="text-center text-neutral-400">
+					Result below is frozen and will remain for reference
 				</p>
-				<div class="max-w-md mx-auto bg-white/20 rounded-md">
-					<div
-						class="h-2 w-0 bg-emerald-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
-						style:width={guild.xpPercent + '%'}
-						style:transitionProperty="width" />
-				</div>
 			</div>
 			<table class="table mx-auto border-white rounded-lg overflow-hidden text-white">
 				<thead>
