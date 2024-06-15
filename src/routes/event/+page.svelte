@@ -56,17 +56,17 @@
 			<table class="table mx-auto border-white rounded-lg overflow-hidden text-white">
 				<thead>
 					<tr class="bg-black/60 border-b border-white/30">
-						<th class="py-2 px-4 text-left font-semibold">#</th>
-						<th class="py-2 px-4 text-left font-semibold">Username</th>
-						<!-- <th class="py-2 px-4 text-left font-semibold">Rank</th> -->
-						<th class="py-2 px-4 text-right font-semibold">Contributed XP</th>
+						<th class="py-2 pl-4 text-left font-semibold">#</th>
+						<th class="py-2 text-left font-semibold">Username</th>
+						<!-- <th class="py-2  text-left font-semibold">Rank</th> -->
+						<th class="py-2 pr-4 text-right font-semibold">Contributed XP</th>
 					</tr>
 				</thead>
 				<tbody class="bg-black/30 divide-y divide-black/30">
 					{#each members as m, i (m.uuid)}
 						<tr class="hover:bg-teal-900/30" class:brightness-50={m.diff == 0}>
-							<td class="py-3 px-4 text-left font-medium">{m.diff ? i + 1 : ''}</td>
-							<td class="py-3 px-4">
+							<td class="py-3 px-4 text-left text-sm font-medium">{m.diff ? i + 1 : ''}</td>
+							<td class="py-3">
 								<div class="flex items-center">
 									<img
 										src="https://mc-heads.net/avatar/{m.uuid}/8"
@@ -75,15 +75,15 @@
 										class="w-6 h-6 pixelated rounded-md" />
 									<a
 										href="https://wynncraft.com/stats/player/{m.username}"
-										class="ml-3 font-medium">
+										class="ml-3 font-medium text-sm md:text-base">
 										{m.username}
 									</a>
 								</div>
 							</td>
-							<!-- <td class="py-3 px-4 text-right">
+							<!-- <td class="py-3  text-right">
         <span>{m.rank}</span>
     </td> -->
-							<td class="py-3 px-4 font-mono text-sm text-right">
+							<td class="py-3 pr-4 font-mono text-xs md:text-sm text-right">
 								<span>{formatter.format(m.diff)}</span>
 							</td>
 						</tr>
