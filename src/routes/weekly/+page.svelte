@@ -326,7 +326,7 @@
 
 								<div class="text-emerald-400">
 									{formatter.format(player.score)} points
-									<span class="ml-1" title="Change from previous week">
+									<!-- <span class="ml-1" title="Change from previous week">
 										{#if player.history.at(-1) && player.score != player.history.at(-1)}
 											{@const percent =
 												((player.score - player.history.at(-1)) / player.history.at(-1)) * 100}
@@ -343,7 +343,7 @@
 															absolutePercent
 														)}%</span>
 										{/if}
-									</span>
+									</span> -->
 
 									{#if enableHistoryChart && player.rank}
 										<div class="absolute top-0 -left-1 -bottom-2 -right-1 -z-10">
