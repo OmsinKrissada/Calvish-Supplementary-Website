@@ -164,64 +164,64 @@
 				</div>
 			</div>
 
-			{#if data.values}
-				<div class="w-full h-full p-10">
-					<li class="flex gap-2 text-xs xl:text-sm">
-						{#each [['xp', 'XP Contribution'], ['playtime', 'Playtime (hours)'], ['war', 'Wars']] as [view, title]}
-							<ul>
-								<button
-									class="px-3 py-2 {selectedView === view
-										? 'bg-teal-900'
-										: 'bg-teal-950/60'} rounded transition-colors"
-									on:click={() => (selectedView = view)}>{title}</button>
-							</ul>
-						{/each}
-						<div class="flex gap-2 ml-auto font-medium">
-							<a
-								target="_blank"
-								href="https://wynncraft.com/stats/player/{uuid}"
-								class="flex items-center gap-2 ml-auto px-3 py-1 rounded-md transition-colors hover:bg-white/10">
-								View on wynncraft.com
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="inline size-5">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-								</svg>
-							</a>
-							<a
-								data-sveltekit-noscroll
-								href="?"
-								class="flex items-center gap-2 px-3 py-1 bg-white text-black rounded-md">
-								Back
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="inline size-5">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-								</svg>
-							</a>
-						</div>
-					</li>
+			<div class="w-full h-full p-10">
+				<li class="flex gap-2 text-xs xl:text-sm">
+					{#each [['xp', 'XP Contribution'], ['playtime', 'Playtime (hours)'], ['war', 'Wars']] as [view, title]}
+						<ul>
+							<button
+								class="px-3 py-2 {selectedView === view
+									? 'bg-teal-900'
+									: 'bg-teal-950/60'} rounded transition-colors"
+								on:click={() => (selectedView = view)}>{title}</button>
+						</ul>
+					{/each}
+					<div class="flex gap-2 ml-auto font-medium">
+						<a
+							target="_blank"
+							href="https://wynncraft.com/stats/player/{uuid}"
+							class="flex items-center gap-2 ml-auto px-3 py-1 rounded-md transition-colors hover:bg-white/10">
+							View on wynncraft.com
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="inline size-5">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+							</svg>
+						</a>
+						<a
+							data-sveltekit-noscroll
+							href="?"
+							class="flex items-center gap-2 px-3 py-1 bg-white text-black rounded-md">
+							Back
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="inline size-5">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+							</svg>
+						</a>
+					</div>
+				</li>
+				{#if data.values}
 					<canvas bind:this={chartCanvas} class="my-10"></canvas>
-				</div>
-			{:else}
-				<div class="flex w-full h-full justify-center items-center">
-					<p class="text-center text-xl">No record</p>
-				</div>
-			{/if}
+				{:else}
+					<div class="flex w-full h-full justify-center items-center">
+						<p class="text-center text-xl">No record</p>
+					</div>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
