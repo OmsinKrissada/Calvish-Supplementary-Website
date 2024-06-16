@@ -422,9 +422,7 @@
 											alt=""
 											loading="lazy"
 											class="w-6 h-6 pixelated rounded-md" />
-										<a
-											href="https://wynncraft.com/stats/player/{player.username}"
-											class="ml-3 font-medium">
+										<a href="?expand={player.uuid}" class="ml-3 font-medium">
 											{player.username}
 										</a>
 									</div>
