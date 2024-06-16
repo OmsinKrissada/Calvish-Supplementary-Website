@@ -20,8 +20,9 @@
 	import { format, subDays } from 'date-fns';
 	import { fade, fly } from 'svelte/transition';
 	import ShadowChart from '$lib/components/ShadowChart.svelte';
-	import InfoIcon from '$lib/components/InfoIcon.svelte';
 	import ErrorText from '$lib/components/ErrorText.svelte';
+	import Loader from '$lib/components/Loader.svelte';
+	import PlayerExpanded from './PlayerExpanded.svelte';
 
 	export let data;
 
@@ -126,6 +127,13 @@
 
 <div class="flex flex-col items-center max-w-6xl mx-auto px-4 lg:px-0">
 	<EventInfoDialog />
+	{#if data.player && data.uuid}
+		{#await data.player}
+			<Loader />
+		{:then player}
+			<PlayerExpanded data={player} uuid={data.uuid} />
+		{/await}
+	{/if}
 
 	{#await data.streamed.nextReset}
 		<div />
@@ -270,7 +278,9 @@
 					in:fade={{ duration: 250, delay: 250 }}
 					out:fade={{ duration: 250 }}>
 					{#each scores as player, i (player.uuid)}
-						<div
+						<a
+							data-sveltekit-noscroll
+							href="?expand={player.uuid}"
 							class="relative flex items-center px-6 py-2 bg-black/10 border-2 border-neutral-500/50 rounded"
 							class:brightness-50={player.score == 0}>
 							<!-- absolutely positioned box -->
@@ -383,7 +393,7 @@
 									</p>
 								{/if}
 							</div>
-						</div>
+						</a>
 					{/each}
 				</div>
 			{:else}
