@@ -13,6 +13,7 @@
 		PointElement
 	} from 'chart.js';
 	import type { ChartOptions, ChartData } from 'chart.js';
+	import annotationPlugin from 'chartjs-plugin-annotation';
 	import { onMount } from 'svelte';
 
 	export let data: {
@@ -31,7 +32,8 @@
 		LineElement,
 		CategoryScale,
 		LinearScale,
-		PointElement
+		PointElement,
+		annotationPlugin
 	);
 
 	const tickColor = '#999999';
@@ -39,19 +41,24 @@
 	const borderColor = '#666666';
 	const skipped = (ctx: CanvasRenderingContext2D, value: string | any[]) =>
 		ctx.p0.skip || ctx.p1.skip ? value : undefined;
+	function average(ctx: CanvasRenderingContext2D) {
+		const values = ctx.chart.data.datasets[0].data;
+		return values.reduce((a, b) => a + b, 0) / values.filter((v) => v !== null && v >= 0).length;
+	}
+
 	const chartOptions: ChartOptions<'line'> = {
 		responsive: true,
 		backgroundColor: '#2dd4bf',
 		aspectRatio: 0,
 		color: '#2dd4bf',
-		borderColor: '#2dd4bf',
+		borderColor: '#2dd4bf88',
 		animation: {
 			duration: 0
 		},
 		// normalized: true,
 		segment: {
-			borderColor: (ctx) => skipped(ctx, 'rgb(255,255,255,0.5)'),
-			borderDash: (ctx) => skipped(ctx, [6, 6])
+			borderColor: (ctx: CanvasRenderingContext2D) => skipped(ctx, 'rgb(255,255,255,0.5)'),
+			borderDash: (ctx: CanvasRenderingContext2D) => skipped(ctx, [6, 6])
 		},
 		spanGaps: true,
 		scales: {
@@ -80,13 +87,31 @@
 				ticks: {
 					color: tickColor
 				},
-				min: 0
+				min: 0,
+				stacked: true
 			}
 		},
-
 		plugins: {
 			legend: {
 				display: false
+			},
+			annotation: {
+				annotations: {
+					annotation: {
+						type: 'line',
+						borderColor: '#FFFFFF55',
+						borderDash: [12, 6],
+						borderDashOffset: 0,
+						borderWidth: 2,
+						label: {
+							display: true,
+							content: (ctx) => 'Avg: ' + Intl.NumberFormat().format(average(ctx).toFixed(2)),
+							position: 'end'
+						},
+						scaleID: 'y',
+						value: (ctx) => average(ctx)
+					}
+				}
 			}
 		}
 	};
@@ -103,7 +128,7 @@
 		if (!chartData) {
 			chartData = {
 				labels: data.labels,
-				datasets: [{ data: selectedData }]
+				datasets: [{ data: selectedData, cubicInterpolationMode: 'monotone' }]
 			};
 		} else {
 			chartData.labels = data.labels;
