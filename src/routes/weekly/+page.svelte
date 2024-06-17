@@ -49,11 +49,18 @@
 	let interval: number;
 	let currentScores: PlayerScore[];
 	let displayScores: MinimalPlayerScore[] | null = null;
-	$: scores = (displayScores || currentScores) as (PlayerScore | MinimalPlayerScore)[];
+	let onlineOnly = false;
+
+	$: scores = (displayScores ||
+		currentScores?.filter((s) => !(!displayScores && onlineOnly) || s.online)) as (
+		| PlayerScore
+		| MinimalPlayerScore
+	)[];
 
 	let weeks: { id: number; start: string; end: string }[];
 	let selectedWeek: { id: any; start: string; end: string };
 	let error = '';
+
 	$: if (selectedWeek) {
 		if (selectedWeek.id === weeks[0].id) {
 			displayScores = null;
@@ -118,7 +125,7 @@
 
 	onDestroy(() => clearInterval(interval));
 
-	let enableHistoryChart = false;
+	// let enableHistoryChart = false;
 	// const points = [0, 10, 20, 30, 30];
 	// setInterval(() => {
 	// 	points[0] += 1;
@@ -146,7 +153,7 @@
 			<Chart {scores} />
 		{/if}
 	</div>
-	<div class="flex justify-between w-full">
+	<div class="flex flex-col items-end gap-4 w-full">
 		<!-- {#if showingCurrentWeek && tileView}
 			<div class="hidden lg:block text-sm border-neutral-800 rounded-md">
 				<SwitchGroup as="div" class="ml-auto">
@@ -167,7 +174,25 @@
 				</SwitchGroup>
 			</div>
 		{/if} -->
-		<div class="flex items-center gap-2 ml-auto mb-4">
+		<div class="font-medium text-sm lg:text-base border-neutral-800 rounded-md">
+			{#if !displayScores}
+				<SwitchGroup as="div" class="flex items-center">
+					<Switch
+						class="{onlineOnly
+							? 'bg-gradient-to-l from-teal-600 to-teal-400'
+							: 'bg-white/20'} relative inline-flex h-5 w-10 mr-2 shrink-0 cursor-pointer rounded-full p-[2px] border-transparent transition-colors duration-200 ease-in-out"
+						id="history-chart-checkbox"
+						bind:checked={onlineOnly}>
+						<span
+							aria-hidden="true"
+							class={`${onlineOnly ? 'translate-x-5' : 'translate-x-0'}
+			  pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`} />
+					</Switch>
+					<SwitchLabel>Only show online players</SwitchLabel>
+				</SwitchGroup>
+			{/if}
+		</div>
+		<div class="flex items-center gap-2 mb-4">
 			<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
 			<div class="hidden sm:flex border border-white/30 rounded-md">
 				<button
@@ -355,11 +380,11 @@
 										{/if}
 									</span> -->
 
-									{#if enableHistoryChart && player.rank}
+									<!-- {#if enableHistoryChart && player.rank}
 										<div class="absolute top-0 -left-1 -bottom-2 -right-1 -z-10">
 											<ShadowChart points={[...player.history, player.score]} />
 										</div>
-									{/if}
+									{/if} -->
 								</div>
 								<p
 									class="{!selectedWeek || selectedWeek.id >= 43
