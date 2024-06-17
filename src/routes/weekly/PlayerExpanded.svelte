@@ -55,7 +55,7 @@
 		animation: {
 			duration: 0
 		},
-		// normalized: true,
+		normalized: true,
 		segment: {
 			borderColor: (ctx: CanvasRenderingContext2D) => skipped(ctx, 'rgb(255,255,255,0.5)'),
 			borderDash: (ctx: CanvasRenderingContext2D) => skipped(ctx, [6, 6])
