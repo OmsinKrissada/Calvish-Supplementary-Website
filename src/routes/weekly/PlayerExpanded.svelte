@@ -85,7 +85,14 @@
 					color: borderColor
 				},
 				ticks: {
-					color: tickColor
+					color: tickColor,
+					// For a category axis, the val is the index so the lookup via getLabelForValue is needed
+					callback: function (val, index) {
+						// Hide every 2nd tick label
+						return Intl.NumberFormat('en', { notation: 'compact', compactDisplay: 'long' }).format(
+							Number(val)
+						);
+					}
 				},
 				min: 0,
 				stacked: true
