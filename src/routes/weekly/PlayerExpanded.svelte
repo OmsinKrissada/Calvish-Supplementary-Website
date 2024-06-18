@@ -101,25 +101,25 @@
 		plugins: {
 			legend: {
 				display: false
-			},
-			annotation: {
-				annotations: {
-					annotation: {
-						type: 'line',
-						borderColor: '#FFFFFF55',
-						borderDash: [12, 6],
-						borderDashOffset: 0,
-						borderWidth: 2,
-						label: {
-							display: true,
-							content: (ctx) => 'Avg: ' + Intl.NumberFormat().format(average(ctx).toFixed(2)),
-							position: 'end'
-						},
-						scaleID: 'y',
-						value: (ctx) => average(ctx)
-					}
-				}
 			}
+			// annotation: {
+				// 	annotations: {
+					// 		annotation: {
+						// 			type: 'line',
+						// 			borderColor: '#FFFFFF55',
+						// 			borderDash: [12, 6],
+						// 			borderDashOffset: 0,
+						// 			borderWidth: 2,
+						// 			label: {
+							// 				display: true,
+							// 				content: (ctx) => 'Avg: ' + Intl.NumberFormat().format(average(ctx).toFixed(2)),
+							// 				position: 'end'
+						// 			},
+						// 			scaleID: 'y',
+						// 			value: (ctx) => average(ctx)
+					// 		}
+			// 	}
+			// }
 		}
 	};
 
