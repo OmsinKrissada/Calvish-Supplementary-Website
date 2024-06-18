@@ -45,7 +45,7 @@
 		<div class="text-center mt-10">
 			<Loader />
 		</div>
-	{:then [members, guild]}
+	{:then members}
 		<section class="mx-4">
 			<div class="my-10 text-center">
 				<p class="font-bold">GOAL REACHED!</p>

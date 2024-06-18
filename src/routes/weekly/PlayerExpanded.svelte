@@ -14,7 +14,7 @@
 	} from 'chart.js';
 	import type { ChartOptions, ChartData } from 'chart.js';
 	import annotationPlugin from 'chartjs-plugin-annotation';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
 	export let data: {
 		labels: (string | number)[];
@@ -49,7 +49,13 @@
 	const chartOptions: ChartOptions<'line'> = {
 		responsive: true,
 		backgroundColor: '#2dd4bf',
-		aspectRatio: 0,
+		// aspectRatio: 0,
+		maintainAspectRatio: false,
+		// resizeDelay: 1000,
+		onResize: (ch) => {
+			// console.log('inner resize');
+			// ch.resize();
+		},
 		color: '#2dd4bf',
 		borderColor: '#2dd4bf88',
 		animation: {
@@ -103,21 +109,21 @@
 				display: false
 			}
 			// annotation: {
-				// 	annotations: {
-					// 		annotation: {
-						// 			type: 'line',
-						// 			borderColor: '#FFFFFF55',
-						// 			borderDash: [12, 6],
-						// 			borderDashOffset: 0,
-						// 			borderWidth: 2,
-						// 			label: {
-							// 				display: true,
-							// 				content: (ctx) => 'Avg: ' + Intl.NumberFormat().format(average(ctx).toFixed(2)),
-							// 				position: 'end'
-						// 			},
-						// 			scaleID: 'y',
-						// 			value: (ctx) => average(ctx)
-					// 		}
+			// 	annotations: {
+			// 		annotation: {
+			// 			type: 'line',
+			// 			borderColor: '#FFFFFF55',
+			// 			borderDash: [12, 6],
+			// 			borderDashOffset: 0,
+			// 			borderWidth: 2,
+			// 			label: {
+			// 				display: true,
+			// 				content: (ctx) => 'Avg: ' + Intl.NumberFormat().format(average(ctx).toFixed(2)),
+			// 				position: 'end'
+			// 			},
+			// 			scaleID: 'y',
+			// 			value: (ctx) => average(ctx)
+			// 		}
 			// 	}
 			// }
 		}
@@ -140,8 +146,10 @@
 		} else {
 			chartData.labels = data.labels;
 			chartData.datasets[0].data = selectedData;
+			tick().then(() => {
+				if (chart) chart.update();
+			});
 		}
-		if (chart) chart.update();
 	}
 
 	let username: string;
@@ -160,20 +168,30 @@
 			});
 		}
 
+		// setInterval(() => {
+		// 	chart.update('resize');
+		// 	chart.resize();
+		// 	console.log('resized');
+		// }, 1000);
+
 		const res = await fetch(PUBLIC_ENDPOINT + `/player/${uuid}`).then((r) => r.json());
-		console.log;
 		username = res.username;
 		guildRank = res.guild.rank;
 		badgeUri = res.rankBadge;
 		// online = res.online;
 		// server = res.server;
 	});
+
+	function handleResize(a) {
+		// console.log(a);
+		// chart.width = a.width;
+	}
 </script>
 
 <div
 	class="hidden lg:block fixed inset-0 top-20 lg:inset-36 bg-black/90 border-2 border-teal-900 backdrop-blur-md rounded-lg z-40">
 	<div class="h-full flex items-center">
-		<div class="flex items-center w-full h-full">
+		<div class="flex items-center w-full h-full bg-blue-400">
 			<div class="flex flex-col items-center gap-6 p-10 lg:w-1/4">
 				<img
 					src="https://mc-heads.net/body/{uuid}"
@@ -196,7 +214,7 @@
 				</div>
 			</div>
 
-			<div class="w-full h-full p-10">
+			<div class="w-full h-full p-10 bg-lime-400/50">
 				<li class="flex gap-2 text-xs xl:text-sm">
 					{#each [['xp', 'XP Contribution'], ['playtime', 'Playtime (hours)'], ['war', 'Wars']] as [view, title]}
 						<ul>
@@ -246,13 +264,15 @@
 						</a>
 					</div>
 				</li>
-				{#if data.values}
-					<canvas bind:this={chartCanvas} class="my-10"></canvas>
-				{:else}
-					<div class="flex w-full h-full justify-center items-center">
+				<div
+					on:resize={handleResize}
+					class="relative flex w-full h-full justify-center items-center bg-red-400/50">
+					{#if data.values}
+						<canvas bind:this={chartCanvas} class="my-10"></canvas>
+					{:else}
 						<p class="text-center text-xl">No record</p>
-					</div>
-				{/if}
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
