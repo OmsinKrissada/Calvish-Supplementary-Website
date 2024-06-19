@@ -191,7 +191,7 @@
 <div
 	class="hidden lg:block fixed inset-0 top-20 lg:inset-36 bg-black/90 border-2 border-teal-900 backdrop-blur-md rounded-lg z-40">
 	<div class="h-full flex items-center">
-		<div class="flex items-center w-full h-full bg-blue-400">
+		<div class="flex items-center w-full h-full">
 			<div class="flex flex-col items-center gap-6 p-10 lg:w-1/4">
 				<img
 					src="https://mc-heads.net/body/{uuid}"
@@ -214,7 +214,7 @@
 				</div>
 			</div>
 
-			<div class="w-full h-full p-10 bg-lime-400/50">
+			<div class="w-full h-full p-10">
 				<li class="flex gap-2 text-xs xl:text-sm">
 					{#each [['xp', 'XP Contribution'], ['playtime', 'Playtime (hours)'], ['war', 'Wars']] as [view, title]}
 						<ul>
@@ -266,7 +266,7 @@
 				</li>
 				<div
 					on:resize={handleResize}
-					class="relative flex w-full h-full justify-center items-center bg-red-400/50">
+					class="relative flex w-full h-full justify-center items-center">
 					{#if data.values}
 						<canvas bind:this={chartCanvas} class="my-10"></canvas>
 					{:else}
