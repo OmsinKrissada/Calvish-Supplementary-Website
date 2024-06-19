@@ -13,7 +13,7 @@
 		PointElement
 	} from 'chart.js';
 	import type { ChartOptions, ChartData } from 'chart.js';
-	import annotationPlugin from 'chartjs-plugin-annotation';
+	// import annotationPlugin from 'chartjs-plugin-annotation';
 	import { onMount, tick } from 'svelte';
 
 	export let data: {
@@ -32,8 +32,8 @@
 		LineElement,
 		CategoryScale,
 		LinearScale,
-		PointElement,
-		annotationPlugin
+		PointElement
+		// annotationPlugin
 	);
 
 	const tickColor = '#999999';
@@ -41,10 +41,10 @@
 	const borderColor = '#666666';
 	const skipped = (ctx: CanvasRenderingContext2D, value: string | any[]) =>
 		ctx.p0.skip || ctx.p1.skip ? value : undefined;
-	function average(ctx: CanvasRenderingContext2D) {
-		const values = ctx.chart.data.datasets[0].data;
-		return values.reduce((a, b) => a + b, 0) / values.filter((v) => v !== null && v >= 0).length;
-	}
+	// function average(ctx: CanvasRenderingContext2D) {
+	// 	const values = ctx.chart.data.datasets[0].data;
+	// 	return values.reduce((a, b) => a + b, 0) / values.filter((v) => v !== null && v >= 0).length;
+	// }
 
 	const chartOptions: ChartOptions<'line'> = {
 		responsive: true,
@@ -181,11 +181,6 @@
 		// online = res.online;
 		// server = res.server;
 	});
-
-	function handleResize(a) {
-		// console.log(a);
-		// chart.width = a.width;
-	}
 </script>
 
 <div
@@ -264,9 +259,7 @@
 						</a>
 					</div>
 				</li>
-				<div
-					on:resize={handleResize}
-					class="relative flex w-full h-full justify-center items-center">
+				<div class="relative flex w-full h-full justify-center items-center">
 					{#if data.values}
 						<canvas bind:this={chartCanvas} class="my-10"></canvas>
 					{:else}
