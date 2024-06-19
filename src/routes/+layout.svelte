@@ -89,11 +89,19 @@
 
 	<!-- <div class="relative lg:hidden h-1 w-12 mx-auto my-10 bg-emerald-500 rounded z-10" /> -->
 	<div class="my-10 relative flex-grow z-10">
-		{#key data.currentPath}
-			<div in:fly={{ y: -30, duration: 500, delay: 250 }} out:fly={{ y: -30, duration: 250 }}>
-				<slot />
+		{#if !env.PUBLIC_DISABLED}
+			{#key data.currentPath}
+				<div in:fly={{ y: -30, duration: 500, delay: 250 }} out:fly={{ y: -30, duration: 250 }}>
+					<slot />
+				</div>
+			{/key}
+		{:else}
+			<div class="font-medium text-center">
+				😢 Sorry, I intentionally disabled the site on purpose for the following reason(s):
+				<span class="font-normal text-neutral-400"
+					>{env.PUBLIC_DISABLE_REASON || '(none given)'}</span>
 			</div>
-		{/key}
+		{/if}
 	</div>
 	<!-- <Banner /> -->
 </div>
