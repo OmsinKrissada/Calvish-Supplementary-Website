@@ -52,10 +52,12 @@
 	let onlineOnly = false;
 
 	$: scores = (displayScores ||
-		currentScores?.filter((s) => !(!displayScores && onlineOnly) || s.online)) as (
+		currentScores
+			?.map((s, i) => ({ ...s, ranking: i + 1 }))
+			.filter((s) => !(!displayScores && onlineOnly) || s.online)) as ((
 		| PlayerScore
 		| MinimalPlayerScore
-	)[];
+	) & { ranking: number })[];
 
 	let weeks: { id: number; start: string; end: string }[];
 	let selectedWeek: { id: any; start: string; end: string };
@@ -311,7 +313,7 @@
 							<!-- absolutely positioned box -->
 							{#if player.score > 0}
 								<div class="absolute md:-top-4 md:-left-4 -top-2 -left-2">
-									{#if i == 0}
+									{#if player.ranking === 1}
 										<img
 											src="https://lh3.googleusercontent.com/0CHvIkhgSfKcZp0CLKqjfv-mLiXZUlVu8LGNm7SIsFfL6HCdZhZsySLv6pbSOBQZ667r6BAAp_lJVbwMhtSkRaikqEMBk8TuI1Y=s400"
 											alt=""
@@ -320,7 +322,8 @@
 										<div
 											class="flex justify-center items-center w-10 leading-none mr-2 py-0.5 font-fira text-center bg-sky-800 border border-sky-600 rounded-full">
 											<p>
-												{i + 1}<span class="align-super text-xs">{getNth(i + 1)}</span>
+												{player.ranking}<span class="align-super text-xs"
+													>{getNth(player.ranking)}</span>
 											</p>
 										</div>
 									{/if}
