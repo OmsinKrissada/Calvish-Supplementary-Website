@@ -51,7 +51,7 @@
 	let displayScores: MinimalPlayerScore[] | null = null;
 	let onlineOnly = false;
 
-	$: scores = (displayScores ||
+	$: scores = (displayScores?.map((s, i) => ({ ...s, ranking: i + 1 })) ||
 		currentScores
 			?.map((s, i) => ({ ...s, ranking: i + 1 }))
 			.filter((s) => !(!displayScores && onlineOnly) || s.online)) as ((
