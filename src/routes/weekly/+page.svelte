@@ -244,7 +244,7 @@
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0 -translate-y-2">
 					<ListboxOptions
-						class="absolute inset-x-0 mt-2 py-1 bg-neutral-950 border border-neutral-700 rounded-md z-10">
+						class="absolute inset-x-0 h-96 overflow-auto mt-2 py-1 bg-neutral-950 border border-neutral-700 rounded-md z-10">
 						{#each weeks as week (week.id)}
 							<ListboxOption let:selected value={week}>
 								<div
