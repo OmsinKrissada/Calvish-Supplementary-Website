@@ -6,7 +6,7 @@
 	import Banner from './Banner.svelte';
 
 	const redirects = [
-		{ name: 'All-time XP Contribution', path: '/' },
+		{ name: 'Member List', path: '/' },
 		{ name: 'Weekly Progress', path: '/weekly' },
 		{ name: 'Race to lvl 81', path: '/event' }
 	];
@@ -22,7 +22,7 @@
 					href={item.path}
 					class="{$page.url.pathname === item.path
 						? 'bg-white/20 text-white'
-						: ''} block relative px-4 py-2 hover:bg-white/10 font-medium text-sm text-center text-neutral-400 hover:text-white rounded transition-all">
+						: ''} block relative px-4 py-2 hover:bg-white/10 font-medium text-sm text-center text-neutral-200 hover:text-white rounded transition-all">
 					{item.name}
 				</a>
 			{/each}

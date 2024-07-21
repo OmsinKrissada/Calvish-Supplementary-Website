@@ -17,3 +17,8 @@ export function fullDurationString(seconds: number, zero = false) {
 	// 	{ delimiter: ', ', zero }
 	// );
 }
+
+export function getLanguage() {
+	if (navigator.languages) return navigator.languages[0];
+	else return navigator.language;
+}
