@@ -9,7 +9,7 @@
 	} from '@rgossiaux/svelte-headlessui';
 
 	// current dialog id counter: 2
-	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < 3;
+	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < 4;
 	let persistent = false;
 
 	function closeModal() {
@@ -18,7 +18,7 @@
 
 	function closeModalButton() {
 		if (persistent) {
-			localStorage.setItem('seen_event_dialog', '3');
+			localStorage.setItem('seen_event_dialog', '4');
 		}
 		closeModal();
 	}
@@ -59,10 +59,18 @@
 					<!-- The following div was once a DialogPanel -->
 					<div
 						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-						<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
-							[UPDATED] How are the scores calculated?
-						</HeadlessDialogTitle>
 						<div class="mt-2 space-y-2 text-sm">
+							<p class="font-medium text-green-600 text-lg">
+								<span class="underline text-green-800">What's new</span>: Now defaults to WebSocket
+								connection for real time data instead of constant polling. Updated data is pushed to
+								you when available. You really don't have to hit refresh to update them..
+							</p>
+
+							<div class="border-b border-black border-dashed"></div>
+
+							<HeadlessDialogTitle as="h3" class="mb-4 text-xl font-bold leading-6 text-gray-900">
+								How are the scores calculated?
+							</HeadlessDialogTitle>
 							<p>Your score is calculated from your weekly stats.</p>
 							<p>
 								This includes your
