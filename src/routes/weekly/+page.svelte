@@ -73,7 +73,9 @@
 
 	let tileView = true;
 
-	const socket = io(`${PUBLIC_ENDPOINT.replaceAll('http', 'ws')}`);
+	const socket = io(`${PUBLIC_ENDPOINT.replaceAll('http', 'ws')}`, {
+		path: '/api/calvish/socket.io'
+	});
 	let socketStatus = 'Connecting ...';
 	onMount(async () => {
 		socket.on('weekly', (data) => {
