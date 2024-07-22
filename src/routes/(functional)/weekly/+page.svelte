@@ -1,10 +1,5 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import Chart from '$lib/components/Chart.svelte';
-	import Countdown from '$lib/components/Countdown.svelte';
-	import { env } from '$env/dynamic/public';
-	import type { MinimalPlayerScore, PlayerScore } from '$lib/types';
-	import EventInfoDialog from '$lib/components/EventInfoDialog.svelte';
 	import {
 		Listbox,
 		ListboxButton,
@@ -18,8 +13,15 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { CheckCircle, ChevronUpDown } from '@steeze-ui/heroicons';
 	import { format, subDays } from 'date-fns';
-	import { fade, fly } from 'svelte/transition';
-	import ShadowChart from '$lib/components/ShadowChart.svelte';
+	import { io } from 'socket.io-client';
+	import { PUBLIC_ENDPOINT } from '$env/static/public';
+	import { fade } from 'svelte/transition';
+
+	import { env } from '$env/dynamic/public';
+	import type { MinimalPlayerScore, PlayerScore } from '$lib/types';
+	import Chart from '$lib/components/Chart.svelte';
+	import Countdown from '$lib/components/Countdown.svelte';
+	import EventInfoDialog from '$lib/components/EventInfoDialog.svelte';
 	import ErrorText from '$lib/components/ErrorText.svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import PlayerExpanded from './PlayerExpanded.svelte';
@@ -47,18 +49,10 @@
 		return 'th';
 	}
 
-	let interval: number;
+	// let interval: number;
 	let currentScores: PlayerScore[];
 	let displayScores: MinimalPlayerScore[] | null = null;
 	let onlineOnly = false;
-
-	$: scores = (displayScores?.map((s, i) => ({ ...s, ranking: i + 1 })) ||
-		currentScores
-			?.map((s, i) => ({ ...s, ranking: i + 1 }))
-			.filter((s) => !(!displayScores && onlineOnly) || s.online)) as ((
-		| PlayerScore
-		| MinimalPlayerScore
-	) & { ranking: number })[];
 
 	let weeks: { id: number; start: string; end: string }[];
 	let selectedWeek: { id: any; start: string; end: string };
@@ -81,33 +75,23 @@
 
 	let tileView = true;
 
-	function fetchScore() {
-		return fetch(env.PUBLIC_ENDPOINT + '/weekly/score')
-			.then((res) => res.json())
-			.catch((err) => (error = err)) as Promise<PlayerScore[]>;
-		// return (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/score')).json()) as PlayerScore[];
-	}
+	const socket = io(new URL(PUBLIC_ENDPOINT).origin.replaceAll('http', 'ws'), {
+		path: '/api/calvish/socket.io/'
+	});
+	let socketStatus = 'Connecting ...';
 	onMount(async () => {
-		let eventSource = new EventSource(env.PUBLIC_ENDPOINT + '/weekly/score_event');
-		let i = 0;
-		eventSource.addEventListener('open', () => console.log('open'));
-		eventSource.onopen = () => console.log('open bruh');
-		// eventSource.addEventListener('', () => console.log('close'));
-		eventSource.onerror = (e) => {
-			console.log('error');
-		};
-		// setInterval(() => console.log(eventSource.readyState), 1000);
-		eventSource.onmessage = (message) => {
-			console.log(`receiving data [${i}]`);
-			console.log(message.data);
-			i++;
-		};
-		console.log('registered');
+		socket.on('weekly', (data) => {
+			currentScores = data;
+			console.debug('received');
+		});
 
-		currentScores = await fetchScore();
-		interval = setInterval(async () => {
-			currentScores = await fetchScore();
-		}, 10000);
+		socket.on('connect', () => {
+			socketStatus = 'Connected';
+		});
+
+		socket.on('disconnect', () => {
+			socketStatus = 'Reconnecting ...';
+		});
 
 		const weeksRes = (await (await fetch(env.PUBLIC_ENDPOINT + '/weekly/weeks')).json()) as {
 			id: number;
@@ -127,7 +111,17 @@
 		selectedWeek = weeks[0];
 	});
 
-	onDestroy(() => clearInterval(interval));
+	$: scores = (displayScores?.map((s, i) => ({ ...s, ranking: i + 1 })) ||
+		currentScores
+			?.map((s, i) => ({ ...s, ranking: i + 1 }))
+			.filter((s) => !(!displayScores && onlineOnly) || s.online)) as ((
+		| PlayerScore
+		| MinimalPlayerScore
+	) & { ranking: number })[];
+
+	onDestroy(() => {
+		socket.disconnect();
+	});
 
 	// let enableHistoryChart = false;
 	// const points = [0, 10, 20, 30, 30];
@@ -196,74 +190,97 @@
 				</SwitchGroup>
 			{/if}
 		</div>
-		<div class="flex items-center gap-2 mb-4">
-			<!-- <p class="text-neutral-400">Data automatically refreshes!</p> -->
-			<div class="hidden sm:flex border border-white/30 rounded-md">
-				<button
-					on:click={() => {
-						tileView = false;
-					}}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="w-9 p-2 rounded {!tileView
-							? 'fill-white bg-white/20'
-							: 'fill-neutral-600 hover:fill-neutral-400'}"
-						viewBox="0 0 24 24"
-						><title>table</title><path
-							d="M22 20V4C22 2.9 21.1 2 20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20M4 6.5V4H20V6.5H4M4 11V8.5H20V11H4M4 15.5V13H20V15.5H4M4 20V17.5H20V20H4Z" /></svg>
-				</button>
-				<button
-					on:click={() => {
-						tileView = true;
-					}}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="w-9 p-2 rounded {tileView
-							? 'fill-white bg-white/20'
-							: 'fill-neutral-600 hover:fill-neutral-400'}"
-						viewBox="0 0 24 24"
-						><title>tile</title><path
-							d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4C2.92,22 2,21.1 2,20V4A2,2 0 0,1 4,2M4,4V11H11V4H4M4,20H11V13H4V20M20,20V13H13V20H20M20,4H13V11H20V4Z" /></svg>
-				</button>
-			</div>
-			<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
-				<ListboxButton
-					class="relative w-56 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
-					<span class="font-medium text-black truncate"
-						>{selectedWeek
-							? `${selectedWeek.start} - ${selectedWeek.end}`
-							: 'Loading records...'}</span>
-					<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500">
-						<Icon src={ChevronUpDown} size="24" />
+		<div class="flex flex-wrap-reverse justify-end lg:justify-betwee w-full items-center mb-4">
+			<div class="flex gap-2 font-medium mr-auto">
+				<p class="hidden md:block">Real time connection:</p>
+				<div class="flex items-center">
+					{#if socketStatus === 'Connected'}
+						<img
+							src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/3/38/Experience_Orb.gif"
+							class="mr-1 w-5"
+							alt="" />
+					{:else}
+						<div
+							class="mr-1 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+							role="status">
+						</div>
+					{/if}
+					<span class={socketStatus === 'Connected' ? 'text-lime-500' : ''}>
+						{socketStatus}
 					</span>
-				</ListboxButton>
-				<Transition
-					as="div"
-					enter="relative opacity-0 transition duration-150 z-50"
-					enterFrom="opacity-0 -translate-y-2"
-					enterTo="opacity-100"
-					leave="relative opacity-100 transition duration-150 z-50"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0 -translate-y-2">
-					<ListboxOptions
-						class="absolute inset-x-0 h-96 overflow-auto mt-2 py-1 bg-neutral-950 border border-neutral-700 rounded-md z-10">
-						{#each weeks as week (week.id)}
-							<ListboxOption let:selected value={week}>
-								<div
-									class="flex items-center px-3 py-2 hover:bg-teal-950 hover:text-teal-300 focus:ring-0 cursor-pointer"
-									class:font-medium={selected}
-									class:text-teal-300={selected}
-									class:text-white={!selected}>
-									<p class="inline">{week.start} - {week.end} {week.id === 42 ? '(cursed)' : ''}</p>
-									{#if selected}
-										<Icon src={CheckCircle} size="24" class="ml-auto" />
-									{/if}
-								</div>
-							</ListboxOption>
-						{/each}
-					</ListboxOptions>
-				</Transition>
-			</Listbox>
+				</div>
+			</div>
+			<div class="flex gap-2 items-center">
+				<div class="hidden sm:flex border border-white/30 rounded-md">
+					<button
+						on:click={() => {
+							tileView = false;
+						}}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-9 p-2 rounded {!tileView
+								? 'fill-white bg-white/20'
+								: 'fill-neutral-600 hover:fill-neutral-400'}"
+							viewBox="0 0 24 24"
+							><title>table</title><path
+								d="M22 20V4C22 2.9 21.1 2 20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20M4 6.5V4H20V6.5H4M4 11V8.5H20V11H4M4 15.5V13H20V15.5H4M4 20V17.5H20V20H4Z" /></svg>
+					</button>
+					<button
+						on:click={() => {
+							tileView = true;
+						}}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="w-9 p-2 rounded {tileView
+								? 'fill-white bg-white/20'
+								: 'fill-neutral-600 hover:fill-neutral-400'}"
+							viewBox="0 0 24 24"
+							><title>tile</title><path
+								d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4C2.92,22 2,21.1 2,20V4A2,2 0 0,1 4,2M4,4V11H11V4H4M4,20H11V13H4V20M20,20V13H13V20H20M20,4H13V11H20V4Z" /></svg>
+					</button>
+				</div>
+				<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
+					<ListboxButton
+						class="relative w-48 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
+						<span class="font-medium text-black truncate"
+							>{selectedWeek
+								? `${selectedWeek.start} - ${selectedWeek.end}`
+								: 'Loading records...'}</span>
+						<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500">
+							<Icon src={ChevronUpDown} size="24" />
+						</span>
+					</ListboxButton>
+					<Transition
+						as="div"
+						enter="relative opacity-0 transition duration-150 z-50"
+						enterFrom="opacity-0 -translate-y-2"
+						enterTo="opacity-100"
+						leave="relative opacity-100 transition duration-150 z-50"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0 -translate-y-2">
+						<ListboxOptions
+							class="absolute inset-x-0 h-96 overflow-auto mt-2 py-1 bg-neutral-950 border border-neutral-700 rounded-md z-10">
+							{#each weeks as week (week.id)}
+								<ListboxOption let:selected value={week}>
+									<div
+										class="flex items-center px-3 py-2 hover:bg-teal-950 hover:text-teal-300 focus:ring-0 cursor-pointer"
+										class:font-medium={selected}
+										class:text-teal-300={selected}
+										class:text-white={!selected}>
+										<p class="inline">
+											{week.start} - {week.end}
+											{week.id === 42 ? '(cursed)' : ''}
+										</p>
+										{#if selected}
+											<Icon src={CheckCircle} size="24" class="ml-auto" />
+										{/if}
+									</div>
+								</ListboxOption>
+							{/each}
+						</ListboxOptions>
+					</Transition>
+				</Listbox>
+			</div>
 		</div>
 	</div>
 
