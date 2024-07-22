@@ -5,7 +5,7 @@
 	import { env } from '$env/dynamic/public';
 	import Loader from '$lib/components/Loader.svelte';
 	import ErrorText from '$lib/components/ErrorText.svelte';
-	import { format, formatDistanceToNow } from 'date-fns';
+	import { format, formatDistanceToNowStrict } from 'date-fns';
 
 	export let data;
 
@@ -69,7 +69,7 @@
 				</p>
 				<div class="max-w-md mx-auto bg-white/20 rounded-md">
 					<div
-						class="h-2 w-0 bg-amber-500 shadow-[0px_0px_10px_orange] rounded-md duration-1000"
+						class="h-2 w-0 bg-green-500 shadow-[0px_0px_10px_green] rounded-md duration-1000"
 						style:width={guild.xpPercent + '%'}
 						style:transitionProperty="width" />
 				</div>
@@ -113,23 +113,22 @@
 			<table
 				class="hidden sm:table mt-4 mx-auto border-collapse rounded-lg overflow-hidden text-white">
 				<thead>
-					<tr class="bg-yellow-700/60">
+					<tr class="bg-teal-700/60">
 						<th class="py-2 px-4 text-left font-semibold">#</th>
 						<th class="py-2 px-4 text-left font-semibold">Member</th>
-						<th class="py-2 px-4 text-left font-semibold">Rank</th>
 						<th class="py-2 px-4 text-right font-semibold">Member since</th>
 						<th class="py-2 px-4 text-right font-semibold">Contributed XP</th>
 						<th class="py-2 px-4 text-right font-semibold">% of Combined XP</th>
 					</tr>
 				</thead>
-				<tbody class="bg-yellow-900/30 divide-y divide-yellow-700/30">
+				<tbody class="bg-teal-900/30 divide-y divide-teal-700/30">
 					{#await data.members}
 						<div class="text-center mt-10">
 							<Loader />
 						</div>
 					{:then members}
 						{#each members as m, i (m.uuid)}
-							<tr class="hover:bg-yellow-800/30">
+							<tr class="hover:bg-teal-800/30">
 								<td class="py-3 px-4 text-left font-medium">{i + 1}</td>
 								<td class="py-3 px-4">
 									<div class="flex items-center">
@@ -141,18 +140,14 @@
 										<a
 											href="https://wynncraft.com/stats/player/{m.username}"
 											class="ml-3 font-medium">
-											{m.username}
+											{m.username} <span class="capitalize">({m.rank})</span>
 										</a>
 									</div>
 								</td>
 
-								<td class="py-3 px-4 capitalize">
-									<span>{m.rank}</span>
-								</td>
-
 								<td class="py-3 px-4 text-sm text-right">
 									<span
-										>{format(m.joined, 'PP')} ({formatDistanceToNow(m.joined, {
+										>{format(m.joined, 'PP')} ({formatDistanceToNowStrict(m.joined, {
 											addSuffix: true
 										})})</span>
 								</td>
@@ -174,7 +169,7 @@
 									<div class="w-full h-1 mt-1 bg-white/30 rounded-full overflow-hidden">
 										<div
 											style:width={`${(m.contributed / totalXp) * 100}%`}
-											class="h-full ml-auto bg-amber-500" />
+											class="h-full ml-auto bg-green-500" />
 									</div>
 								</td>
 							</tr>
