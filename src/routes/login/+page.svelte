@@ -1,6 +1,6 @@
-<div class="flex items-center h-screen bg-[url('balloon.png')] bg-blend-darken bg-">
+<div class="flex items-center h-screen bg-[url('/balloon.webp')] bg-blend-darken bg-">
 	<!-- <img
-		src="balloon.png"
+		src="balloon.webp"
 		alt=""
 		class="absolute inset-0 w-screen h-screen object-cover brightness-50 blur-sm" /> -->
 	<div

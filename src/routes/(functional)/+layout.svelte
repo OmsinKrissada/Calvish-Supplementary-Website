@@ -53,7 +53,7 @@
 <!-- <div> -->
 <div
 	style="min-height: 100dvh;"
-	class="fixed min-h-screen w-full bg-black/50 bg-[url('balloon.png')] bg-blend-darken" />
+	class="fixed min-h-screen w-full bg-black/50 bg-[url('/balloon.webp')] bg-blend-darken" />
 
 <div style="min-height: 100dvh;" class="flex flex-col relative min-h-screen text-slate-200">
 	<TheNav />
