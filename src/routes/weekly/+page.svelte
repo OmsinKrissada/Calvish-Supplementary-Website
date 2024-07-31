@@ -98,10 +98,16 @@
 		}[];
 		weeks = weeksRes
 			.map((w) => {
+				const _format = (date: Date) => {
+					return format(
+						date,
+						`MMM dd` + (date.getFullYear() === new Date().getFullYear() ? '' : ` ''yy`)
+					);
+				};
 				return {
 					id: w.id,
-					start: format(new Date(w.createdAt), 'MMM dd'),
-					end: w.endAt ? format(subDays(new Date(w.endAt), 1), 'MMM dd') : 'Now'
+					start: _format(new Date(w.createdAt)),
+					end: w.endAt ? _format(subDays(new Date(w.endAt), 1)) : 'Now'
 				};
 			})
 			.reverse();
@@ -238,7 +244,7 @@
 				</div>
 				<Listbox class="relative text-sm" disabled={!selectedWeek} bind:value={selectedWeek}>
 					<ListboxButton
-						class="relative w-48 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
+						class="relative w-56 px-3 py-2 bg-neutral-100 text-left focus:ring-0 rounded-md">
 						<span class="font-medium text-black truncate"
 							>{selectedWeek
 								? `${selectedWeek.start} - ${selectedWeek.end}`
