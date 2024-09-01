@@ -8,46 +8,11 @@
 	inject({ mode: dev ? 'development' : 'production' });
 
 	import { fly } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
+	import Footer from '$lib/components/Footer.svelte';
+	import Grass from '$lib/components/Grass.svelte';
 
 	export let data;
-
-	let touchCounter = 0;
-	let globalTouchBuffer = 0;
-
-	let globalTouchCount: number | null = null;
-
-	function updateTouchCounter() {
-		touchCounter++;
-		globalTouchBuffer++;
-		localStorage.setItem('touchCounter', `${touchCounter}`);
-	}
-
-	onMount(() => {
-		const count = +(localStorage.getItem('touchCounter') ?? 0);
-		if (!isNaN(count)) {
-			touchCounter = count;
-		}
-
-		setInterval(async () => {
-			if (globalTouchBuffer <= 0) return;
-			fetch(env.PUBLIC_ENDPOINT + '/grass', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ count: globalTouchBuffer })
-			})
-				.then((res) => res.json())
-				.then((data) => (globalTouchCount = data.globalCount));
-			globalTouchBuffer = 0;
-		}, 1000);
-
-		fetch(env.PUBLIC_ENDPOINT + '/grass')
-			.then((res) => res.json())
-			.then((data) => (globalTouchCount = data.globalCount));
-	});
 </script>
 
 <svelte:head>
@@ -65,27 +30,7 @@
 
 <div style="min-height: 100dvh;" class="flex flex-col relative min-h-screen text-slate-200">
 	<TheNav />
-	{#if globalTouchCount !== null}
-		<div class="z-30 hidden xl:block fixed left-6 bottom-4">
-			<p class="font-semibold text-center text-xl text-lime-300 tracking-widest">
-				GRASS <span class="text-xs tracking-normal">(touch it)</span>
-			</p>
-			{#if touchCounter > 0}
-				<p class="text-center text-xs text-lime-200">
-					You touched grass {Intl.NumberFormat('en').format(touchCounter)} times
-				</p>
-				<p class="text-center text-xs text-lime-200">
-					Global count: {Intl.NumberFormat('en').format(globalTouchCount)} times
-				</p>
-			{/if}
-			<button on:click={updateTouchCounter}>
-				<img
-					class="mt-2 shadow-2xl shadow-lime-500/30 rounded-full active:scale-90"
-					src="https://images.unsplash.com/photo-1533460004989-cef01064af7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3Jhc3N8ZW58MHx8MHx8fDA%3D&w=230&q=80"
-					alt="" />
-			</button>
-		</div>
-	{/if}
+	<Grass />
 
 	<!-- <div class="relative lg:hidden h-1 w-12 mx-auto my-10 bg-emerald-500 rounded z-10" /> -->
 	<div class="my-10 relative flex-grow z-10">
