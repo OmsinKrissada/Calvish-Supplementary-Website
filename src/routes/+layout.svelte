@@ -9,7 +9,6 @@
 
 	import { fly } from 'svelte/transition';
 	import { env } from '$env/dynamic/public';
-	import Footer from '$lib/components/Footer.svelte';
 	import Grass from '$lib/components/Grass.svelte';
 
 	export let data;
