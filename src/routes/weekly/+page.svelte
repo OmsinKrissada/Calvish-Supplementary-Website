@@ -195,7 +195,6 @@
 		</div>
 		<div class="flex flex-wrap-reverse justify-end lg:justify-betwee w-full items-center mb-4">
 			<div class="flex gap-2 font-medium mr-auto">
-				<p class="hidden md:block">Real time connection:</p>
 				<div class="flex items-center">
 					{#if socketStatus === 'Connected'}
 						<img
