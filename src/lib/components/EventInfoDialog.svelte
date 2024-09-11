@@ -8,8 +8,9 @@
 		DialogTitle as HeadlessDialogTitle
 	} from '@rgossiaux/svelte-headlessui';
 
-	// current dialog id counter: 2
-	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < 4;
+	let currentDialogCounter = 5;
+
+	$: isOpen = browser && +(localStorage.getItem('seen_event_dialog') ?? 0) < currentDialogCounter;
 	let persistent = false;
 
 	function closeModal() {
@@ -18,7 +19,7 @@
 
 	function closeModalButton() {
 		if (persistent) {
-			localStorage.setItem('seen_event_dialog', '4');
+			localStorage.setItem('seen_event_dialog', `${currentDialogCounter}`);
 		}
 		closeModal();
 	}
@@ -61,9 +62,8 @@
 						class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 						<div class="mt-2 space-y-2 text-sm">
 							<p class="font-medium text-green-600 text-lg">
-								<span class="underline text-green-800">What's new</span>: Now defaults to WebSocket
-								connection for real time data instead of constant polling. Updated data is pushed to
-								you when available. You really don't have to hit refresh to update them..
+								<span class="underline text-green-800">What's new</span>: Reduced points gain from
+								XP from 1 per million to 0.5 per million.
 							</p>
 
 							<div class="border-b border-black border-dashed"></div>
@@ -80,7 +80,7 @@
 								<span class="underline">the number of time you war</span>.
 							</p>
 							<ol class="list-decimal list-inside">
-								<li>Contributed XP &rarr; 1 point per million xp</li>
+								<li>Contributed XP &rarr; 0.5 point per million xp</li>
 								<li>Play time &rarr; 1 point per hour</li>
 								<li>Wars &rarr; 2 points per war</li>
 							</ol>
