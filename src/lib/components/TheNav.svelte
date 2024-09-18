@@ -7,8 +7,7 @@
 
 	const redirects = [
 		{ name: 'All-time XP Contribution', path: '/' },
-		{ name: 'Weekly Progress', path: '/weekly' },
-		{ name: 'Race to lvl 81', path: '/event' }
+		{ name: 'Weekly Progress', path: '/weekly' }
 	];
 </script>
 
